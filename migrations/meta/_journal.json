@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1729889195771,
+      "tag": "0000_tranquil_star_brand",
+      "breakpoints": true
+    }
+  ]
+}
