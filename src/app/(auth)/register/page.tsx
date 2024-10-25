@@ -1,12 +1,17 @@
 'use client'
 
+import { registerAction } from "@/actions/authAction"
 import { registerSchema } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import {z} from "zod"
 
 export default function Register(){
+
+    const router = useRouter()
+    const [err, setErr] = useState<string|null>(null)
 
     const {handleSubmit, register, formState:{errors}} = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -19,12 +24,14 @@ export default function Register(){
         },
     })
 
-    const onSubmit = (values: z.infer<typeof registerSchema>) => {
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+        setErr(null)
+        const response = await registerAction(values)
+        if(response.error) setErr(response.error)
+        else router.push("/login")
     }
 
 
-    const router = useRouter()
     return (
         <div className="bg-blue-950 h-screen flex flex-col items-center  gap-8">
             <h1 className="font-bold text-white text-4xl mt-20">Registrate</h1>
@@ -47,6 +54,7 @@ export default function Register(){
                     <button type="button" onClick={() => router.push('/login')} className="bg-[#D0D9EC] p-2 w-72">¿Ya tienes cuenta? Iniciar sesion.</button>
                 </div>
             </form>
+            {err && <span className="text-red-500">{err}</span>}
         </div>
     )
 }
