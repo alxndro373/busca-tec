@@ -5,10 +5,14 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import {z} from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginAction } from "@/actions/authAction"
+import { useState } from "react"
 
 
 export default function Login(){
 
+    const [err, setErr] = useState<string|null>(null)
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -18,12 +22,15 @@ export default function Login(){
         },
     })
 
-    const onSubmit = (values: z.infer<typeof loginSchema>) => {
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+       setErr(null)
+       const response =  await loginAction(values)
+       if(response.error) setErr(response.error)
+       else router.push("/")
+       
     }
 
 
-    const router = useRouter()
     return (
         <div className="bg-blue-950 h-screen flex flex-col items-center  gap-8">
             <h1 className="font-bold text-white text-4xl mt-20">Iniciar Sesion</h1>
@@ -40,7 +47,7 @@ export default function Login(){
                     <button type="button" onClick={() => router.push("/register")} className="bg-[#D0D9EC] p-2 w-72">¿Nuevo? crear una cuenta.</button>
                 </div>
             </form>
-            
+            {err && <span className="text-red-500">{err}</span> }
         </div>
     )
 }
