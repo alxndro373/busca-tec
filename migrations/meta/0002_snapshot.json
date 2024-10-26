@@ -1,0 +1,112 @@
+{
+  "id": "bfe9a2e4-3b81-48c4-97a0-1a6a582243c7",
+  "prevId": "6f79bae7-e842-43b0-813f-f89e1c3689be",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.objetos": {
+      "name": "objetos",
+      "schema": "",
+      "columns": {
+        "id_objeto": {
+          "name": "id_objeto",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nombre del objeto": {
+          "name": "nombre del objeto",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "localizacion": {
+          "name": "localizacion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fecha_encontrada": {
+          "name": "fecha_encontrada",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estado_objeto": {
+          "name": "estado_objeto",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "imagen": {
+          "name": "imagen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.usuarios": {
+      "name": "usuarios",
+      "schema": "",
+      "columns": {
+        "id_usuario": {
+          "name": "id_usuario",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nombre_usuario": {
+          "name": "nombre_usuario",
+          "type": "varchar(25)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "correo_electronico": {
+          "name": "correo_electronico",
+          "type": "varchar(250)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "numero_telefono": {
+          "name": "numero_telefono",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
