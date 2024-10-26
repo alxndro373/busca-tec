@@ -9,7 +9,7 @@ export const getObjects = async () => {
 } 
 
 
-export const addObject = async (name:string,description:string,localization:string, date: Date | null, category: string | null) => {
+export const addObject = async (name:string,description:string| null,localization:string, date: Date | null, category: string | null) => {
     await db.insert(objetos).values({
         name_object: name,
         description,

@@ -15,7 +15,7 @@ export type objectType = {
 export type objectType = {
     id_object: string,
     name_object: string,
-    description: string ,
+    description: string | null,
     localization: string,
     date: string | null
     state: boolean | null
