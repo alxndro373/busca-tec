@@ -19,4 +19,5 @@ export type objectType = {
     localization: string,
     date: string | null
     state: boolean | null
+    category: string | null
 }

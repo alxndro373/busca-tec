@@ -25,7 +25,7 @@ const ObjectsList: FC<Props> = ({objects}) => {
                     <span className="px-2 bg-red-500 text-white">{`${!object.state ? "Perdido" : "Encontrado"}`}</span>
                     <p>⌚ {object.date}</p>
                     <hr />
-                    <p>💼Electronica</p>
+                    <p>💼 {object.category}</p>
                 </div>
             </div>
         ))}

@@ -24,11 +24,11 @@ export const objetos = pgTable("objetos", {
     .$default(() => crypto.randomUUID()),
     name_object: text("nombre del objeto")
     .notNull(),
-    description: text("descripcion")
-    .notNull(),
+    description: text("descripcion"),
     localization: text("localizacion")
     .notNull(),
     date: date("fecha_encontrada"),
     state: boolean("estado_objeto").default(false),
-    image_url: text("imagen")
+    image_url: text("imagen"),
+    category: text("categorias")
 })

@@ -21,8 +21,8 @@ export default function LostObjects() {
             localization:""  
         },
     })
-    const onSubmit : SubmitHandler<objectType> = ({name_object,description,localization}) => {
-        addObject(name_object,description,localization,startDate)
+    const onSubmit : SubmitHandler<objectType> = ({name_object,description,localization,category}) => {
+        addObject(name_object,description,localization,startDate,category)
         alert("Objeto perdido publicado exitosamente")
     }
 
@@ -39,7 +39,7 @@ export default function LostObjects() {
                         className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" 
                         type="text" 
                         placeholder="escribe que tipo de objeto es." 
-                        {...register("name_object")}
+                        {...register("name_object", {required:true})}
                         />
                     </div>
                     <div>
@@ -56,8 +56,18 @@ export default function LostObjects() {
                         className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" 
                         type="text" 
                         placeholder="Escribe una breve descripción del lugar donde recuerdes haberlo perdido." 
-                        {...register("localization")}
+                        {...register("localization", {required:true})}
                         />
+                    </div>
+                    <div>
+                        <p className="mb-2 font-bold">Categorias</p>
+                        <select className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white" {...register("category")} >
+                            <option value="Accesorios Personales">Accesorios Personales</option>
+                            <option value="Documentos y Tarjetas">Documentos y Tarjetas</option>
+                            <option value="Electronica">Electrónica</option>
+                            <option value="Ropa y Calzado">Ropa o calzado</option>
+                            <option value="otro">Otro</option>
+                        </select>
                     </div>
                     <div className="mb-12">
                         <p className="mb-2 font-bold">Fecha</p>
@@ -76,11 +86,11 @@ export default function LostObjects() {
                         </div>
                         <div className="mb-10">
                             <div className=" text-center mb-2">
-                            <input type="checkbox" className="align-middle" />
+                            <input type="checkbox" className="align-middle" required={true} />
                             <label className="ml-2 text-sm">Acepto la <strong>politica de privacidad</strong></label>
                             </div>
                             <div className="text-center mb-4">
-                            <input type="checkbox" className="align-middle" />
+                            <input type="checkbox" className="align-middle" required={true} />
                             <label className="ml-2 text-sm">Acepto los <strong>terminos y condiciones</strong> </label>
                             </div>
                             <div className="text-center">

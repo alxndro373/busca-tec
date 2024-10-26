@@ -1,0 +1,1 @@
+ALTER TABLE "objetos" ADD COLUMN "categorias" text;
