@@ -12,6 +12,9 @@ export default async function UserHeader(){
             <nav className="mr-4">
                 <ul className="flex justify-end gap-4 items-center">
                     <li>
+                        <Link href={"/"}>Home</Link>
+                    </li>
+                    <li>
                         <Link href={'/objects'}>OBJETOS</Link>
                     </li>
                 
@@ -24,7 +27,10 @@ export default async function UserHeader(){
                                 "use server"
                                 await signOut()
                             }}>
-                                <button type="submit" className="bg-red-500 py-2 px-4 rounded-md">Cerrar Sesion</button>
+                                <button className="bg-blue-950 text-white py-2 px-4 rounded-md mb-1 mr-1">
+                                    <Link href={"/ad"}>Añadir anuncio</Link>
+                                </button>
+                                <button type="submit" className="bg-red-500 text-white py-2 px-4 rounded-md mb-1">Cerrar Sesion</button>
                             </form>
                         </>
                         : <Link href={'/login'}>INICIAR SESIOIN</Link>

@@ -1,9 +1,20 @@
-import Image from "next/image"
+"use client"
 
+import ObjectsList from "@/components/objects"
+import { objectStore } from "@/store/objectStore"
+import { useEffect } from "react"
 
+export default  function Objects(){
 
-export default function Objects(){
+    const {recuperateObjects} =  objectStore()
+   
+    useEffect(() => {
 
+        recuperateObjects()
+
+    },[])
+
+    const data = objectStore(state => state.objects)
 
     return (
         <main>
@@ -18,29 +29,9 @@ export default function Objects(){
                     <option value="">Filtrar por</option>
                 </select>
             </div>
-            <div className="flex gap-10 mb-10 w-11/12 ml-auto mr-auto">
-                <div className="w-1/5 bg-white shadow-md">
-                    <img src="https://www.idevice.ro/wp-content/uploads/2024/02/iphone-16-forma-camere.jpg" alt="" className="w-full h-[200px] object-cover" />
-                    <div>
-                        <h4 className="font-bold">Phone 16</h4>
-                        <span className="px-2 bg-red-500 text-white">Perdido</span>
-                        <p>⌚12-02-2024</p>
-                        <hr />
-                        <p>💼Electronica</p>
-                    </div>
-                </div>
-                <div className="w-1/5 bg-white shadow-md ">
-                    <img src="https://th.bing.com/th/id/OIP.YXJ-h7nZF0qE485OQZvk5wHaHa?rs=1&pid=ImgDetMain" alt="" className="w-full h-[200px] object-cover" />
-                    
-                    <div>
-                        <h4 className="font-bold">Xbox x</h4>
-                        <span className="px-2 bg-red-500 text-white">Perdido</span>
-                        <p>⌚15-02-2024</p>
-                        <hr />
-                        <p>💼Electronica</p>
-                    </div>
-                </div>
-            </div>
+             
+            < ObjectsList objects={data} />
+            
         </main>
     )
 }
