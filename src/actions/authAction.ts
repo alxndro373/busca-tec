@@ -29,7 +29,7 @@ export const registerAction = async (values: z.infer<typeof registerSchema>) => 
     try {
 
         const {data, success} = registerSchema.safeParse(values)
-        if(!success) throw new Error ("informacion invalida")
+        if(!success) throw new Error ("Informacion invalida")
         //verificar si ya existe el usuario
         const user = await db.select().from(usuarios).where(eq(usuarios.email, data.email))
         

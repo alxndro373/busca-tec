@@ -36,9 +36,9 @@ export default function Login(){
             <h1 className="font-bold text-white text-4xl mt-20">Iniciar Sesion</h1>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-6">
-                <input type="text" placeholder="correo electronico" className="w-96 py-2" {...form.register("email")} />
+                <input type="text" placeholder="Correo electronico" className="w-96 py-2" {...form.register("email")} />
                 {form.formState.errors.email && <span className="text-red-500">{form.formState.errors.email.message }</span>}
-                <input type="password" placeholder="contraseña" className="w-96 py-2" {...form.register("password")} />
+                <input type="password" placeholder="Contraseña" className="w-96 py-2" {...form.register("password")} />
                 {form.formState.errors.password && <span className="text-red-500">{form.formState.errors.password.message}</span>}
                 </div>
                 <span className="mb-8 text-white inline-block">¿Olvidaste tu contraseña?</span>

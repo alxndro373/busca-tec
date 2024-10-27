@@ -24,18 +24,10 @@ export default function FoundObjects(){
                         <input className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-12" type="text" placeholder="Escribe una breve descripción del lugar donde recuerdes haberlo perdido." />
                     </div>
 
-                    <h2 className="text-white bg-blue-950 w-full py-2 text-2xl mb-10">Preguntas</h2>
+                    <h2 className="text-white bg-blue-950 w-full py-2 text-2xl mb-10">Información de contacto</h2>
                     <div>
-                        <p className="mb-2 font-bold">Pregunta 1</p>
-                        <input className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" type="text" placeholder="Escribe tu pregunta de seguridad." />
-                    </div>
-                    <div>
-                        <p className="mb-2 font-bold">Pregunta 2</p>
-                        <input className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" type="text" placeholder="Escribe tu pregunta de seguridad." />
-                    </div>
-                    <div>
-                        <p className="mb-2 font-bold">Pregunta 3</p>
-                        <input className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" type="text" placeholder="Escribe tu pregunta de seguridad." />
+                        <p className="mb-2 font-bold">Agrega tu número de telefono</p>
+                        <input className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" type="text" placeholder="Escribe tu número de contacto." />
                     </div>
 
 
