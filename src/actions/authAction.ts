@@ -34,7 +34,8 @@ export const registerAction = async (values: z.infer<typeof registerSchema>) => 
         const user = await db.select().from(usuarios).where(eq(usuarios.email, data.email))
         
         if(user[0]) return {error: "El correo ya existe"}
-        await db.insert(usuarios).values({name: data.user, email: data.email, phone: data.password, password: data.password})
+        if(data.password !== data.confirmPassword) return {error: "Las contraseñas no coinciden"}
+        await db.insert(usuarios).values({name: data.user, email: data.email, phone: data.phone, password: data.password})
 
         return {success: true}
         
