@@ -37,11 +37,11 @@ export default function Register(){
             <h1 className="font-bold text-white text-4xl mt-20">Registrate</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-6">
-                    <input type="text" placeholder="Combre de usuario" className="w-96 py-2" {...register("user")} />
+                    <input type="text" placeholder="Nombre de usuario" className="w-96 py-2" {...register("user")} />
                     {errors.user && <span className="text-red-500">{errors.user.message}</span>}
                     <input type="text" placeholder="Correo electronico" className="w-96 py-2" {...register("email")} />
                     {errors.email && <span className="text-red-500">{errors.email.message}</span>}
-                    <input type="text" placeholder="Cúmero de telefono" className="w-96 py-2" {...register("phone")} />
+                    <input type="text" placeholder="Número de telefono" className="w-96 py-2" {...register("phone")} />
                     {errors.phone && <span className="text-red-500">{errors.phone.message}</span>}
                     <input type="password" placeholder="Contraseña" className="w-96 py-2" {...register("password")} />
                     {errors.password && <span className="text-red-500">{errors.password.message}</span>}
