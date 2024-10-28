@@ -62,28 +62,6 @@ const ObjectsList: FC<Props> = ({ objects }) => {
                                 />
                             </div>
                         </div>
-                                                
-                        <div className="mt-4">
-                            <a
-                                href={`https://wa.me/${selectedObject.phone}`}
-                                target="_blank"
-                                rel = "noopener noreferrer"
-                                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-                             >
-                                Es mío
-                            </a>
-
-
-                            {/* {selectedObject.state ? (
-                                <button className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
-                                    Es mío
-                                </button>
-                            ) : (
-                                <button className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
-                                    Yo lo tengo
-                                </button>
-                            )} */}
-                        </div>
                     </div>
                 </div>
             )}
