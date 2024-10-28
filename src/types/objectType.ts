@@ -20,4 +20,6 @@ export type objectType = {
     date: string | null
     state: boolean | null
     category: string | null
+    id_user: string
+    phone: string
 }

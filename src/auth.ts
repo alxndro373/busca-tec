@@ -1,14 +1,36 @@
 
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import NextAuth, { NextAuthConfig } from "next-auth"
+import NextAuth, { DefaultSession, NextAuthConfig} from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { db } from "@/db/drizzle"
 import { loginSchema } from "./lib/zod"
 import { usuarios } from "@/db/schema"
 import { eq } from "drizzle-orm"
+import { DefaultJWT } from "next-auth/jwt"
 
+interface MyJWT extends DefaultJWT {
+    id: string;
+}
+
+interface MySession extends DefaultSession {
+    user: {
+        id: string;
+    } & DefaultSession["user"];
+}
 
 export const authConfig = {
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id; // Añadir el ID de usuario al token
+            }
+            return token as MyJWT;
+        },
+        async session({ session, token }) {
+            session.user.id = token.id as string; // Añadir el ID de usuario a la sesión
+            return session as MySession;
+        },
+    },
    // adapter: DrizzleAdapter(db),
     //session: { strategy: "jwt" },
     // callbacks: {
@@ -31,7 +53,7 @@ export const authConfig = {
         Credentials({
             authorize: async (credentials) => {
                 const { data, success } = loginSchema.safeParse(credentials)
-                if (!success) throw new Error("credenciales invalidas")
+                if (!success) throw new Error("Credenciales invalidas")
                 // verificar si existe el usuario en la bd
                 const user = await db.select().from(usuarios).where(eq(usuarios.email, data.email))
 
@@ -42,8 +64,9 @@ export const authConfig = {
                 if (!user || !isValid) throw new Error("correo o contraseña incorrectos")
 
 
-
-                return user[0]
+                    
+                    return {id: user[0].id_user, ...user[0] };
+                // return user[0]
             },
         })
     ],

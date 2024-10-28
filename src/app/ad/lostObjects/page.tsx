@@ -5,27 +5,50 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react"
-
+import { useContext, useState } from "react"
+import { usuarios } from "@/db/schema"
+import { useSession } from "next-auth/react"
+import { error } from "console"
+import { SessionProvider } from "next-auth/react";
 
 export default function LostObjects() {
-
     
     const [startDate, setStartDate] = useState<Date|null>(new Date());
+    const {data: session, status } = useSession();
 
 
     const {register, handleSubmit} = useForm<objectType>({
         defaultValues: {
             name_object: "",
             description:"" ,
-            localization:""  
+            localization:"",
+            category: "", 
         },
     })
-    const onSubmit : SubmitHandler<objectType> = ({name_object,description,localization,category}) => {
-        addObject(name_object,description,localization,startDate,category)
-        alert("Objeto perdido publicado exitosamente")
+    const onSubmit : SubmitHandler<objectType> = async ({name_object,description,localization,category}) => {
+        
+        const id_user = session?.user?.id;
+        
+        if(!id_user) {
+            alert("Error: No se econtró el ID del usuario. Asegúrate de estar logueado.");
+            return;
+        }
+
+        try {
+            await addObject(name_object, description, localization, startDate, category, id_user);
+            alert("Objeto perdido publicado exitosamente");
+        } catch (error) {
+            alert("Error al publicar el objeto: " + (error instanceof Error ? error.message : "Error desconocido"));
+        }   
     }
 
+    if (status === "loading") {
+        return <div>Cargando...</div>;
+    }
+
+    if (!session) {
+        return <div>No estás autenticado. Por favor inicia sesión.</div>;
+    }
 
     return (
         <>

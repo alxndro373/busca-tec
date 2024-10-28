@@ -3,6 +3,7 @@
 import { objectType } from "@/types/objectType"
 import { FC} from "react"
 import { useState } from "react";
+import { object } from "zod";
 
 interface Props {
     objects: objectType[]
@@ -16,6 +17,12 @@ const ObjectsList: FC<Props> = ({ objects }) => {
     };
 
     const closeModal = () => setSelectedObject(null);
+
+    const handleWhatsAppRedirect = (phone: string) => {
+        const message = "¡Hola! Estoy interesado en el objeto que registraste.";
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank"); // Abre WhatsApp en una nueva pestaña
+    };
 
     return (
         <>
@@ -53,6 +60,12 @@ const ObjectsList: FC<Props> = ({ objects }) => {
                                 <p><strong>Categoría:</strong> {selectedObject.category}</p>
                                 <p><strong>Descripción:</strong> {selectedObject.description}</p>
                                 <p><strong>Lugar:</strong> {selectedObject.localization}</p>
+                                <button 
+                                    onClick={() => handleWhatsAppRedirect(selectedObject.phone)}
+                                    className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+                                >
+                                    Reclamar por WhatsApp
+                                </button>
                             </div>
                             <div className="w-1/3 ml-4">
                                 <img
