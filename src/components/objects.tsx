@@ -4,6 +4,7 @@ import { objectType } from "@/types/objectType"
 import { FC} from "react"
 import { useState } from "react";
 // import { object } from "zod";
+// import { object } from "zod";
 
 interface Props {
     objects: objectType[]

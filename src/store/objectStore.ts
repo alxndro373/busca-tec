@@ -22,6 +22,7 @@ export const objectStore = create<Props>((set) =>
     //         ...state,
     //         objects
     //     }))
+    //     }))
     // },
 
     

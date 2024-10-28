@@ -49,6 +49,7 @@ export const authConfig = {
     //         return true
     //     },
     // },
+    
     providers: [
         Credentials({
             authorize: async (credentials) => {

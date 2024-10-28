@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 
 export const getObjects = async () => {
     // const objects = await db.select().from(objetos)
+    // const objects = await db.select().from(objetos)
     const objects = await db
         .select({
             id_object: objetos.id_object,

@@ -33,4 +33,5 @@ export const objetos = pgTable("objetos", {
     category: text("categorias"),
     id_user: text("id_usuario").references(() => usuarios.id_user),
     // phone: text("numero_telefono")
+    
 })
