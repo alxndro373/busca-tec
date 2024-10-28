@@ -5,11 +5,12 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { useContext, useState } from "react"
-import { usuarios } from "@/db/schema"
+// import { useContext, useState } from "react"
+// import { usuarios } from "@/db/schema"
+import { useState } from "react"
 import { useSession } from "next-auth/react"
-import { error } from "console"
-import { SessionProvider } from "next-auth/react";
+// import { error } from "console"
+// import { SessionProvider } from "next-auth/react";
 
 export default function LostObjects() {
     
