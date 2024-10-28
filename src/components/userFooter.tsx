@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function UserFooter(){
     return (
@@ -6,24 +7,27 @@ export default function UserFooter(){
                 <article>
                     <h3 className="font-semibold mb-2">NUESTRA COMPAÑIA</h3>
                     <ul>
-                        <li>Acerca de nosotros</li>
+                        <li>
+                            <Link href={""} className="hover:text-blue-400">Acerca de nosotros</Link>
+                        </li>
                     </ul>
                 </article>
                 <article>
                     <h3 className="font-semibold mb-2">POLITICAS</h3>
                     <ul>
-                        <li className="mb-2">Aviso de privacidad</li>
-                        <li className="mb-2">Términos y condiciones</li>
-                        <li className="mb-2">Politicas de cookies</li>
+                        <li className="mb-2"><Link href={""} className="hover:text-blue-400">Aviso de privacidad</Link></li>
+                        <li className="mb-2"><Link href={""} className="hover:text-blue-400">Términos y condiciones</Link></li>
+                        <li className="mb-2"><Link href={""} className="hover:text-blue-400">Politicas de cookies</Link></li>
                     </ul>
                 </article>
-                <article>
+
+                {/* <article>
                     <h3 className="font-semibold mb-2">DEJANOS AYUDARTE</h3>
                     <ul>
                         <li className="mb-2">Dudas y comentarios</li>
                         <li>Preguntas frecuentes</li>
                     </ul>
-                </article>
+                </article> */}
             </section>
         </footer>
     )

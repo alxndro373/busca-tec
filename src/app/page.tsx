@@ -15,7 +15,7 @@ export default function Home() {
           <p className="mb-5">Llegaste al lugar indicado, nuestra plataforma esta dedicada a ayudarte a encontrar tus objetos perdidos de manera fácil. </p>
           <p className="mb-5">Publica información detallada sobre el objeto, busca en nuestra base de datos y conecta con otros usuarios que puedan tener información relevante.</p>
           <h3 className="mb-5 font-bold text-lg">¡Recupera tus objetos valiosos hoy mismo!</h3>
-          <button className="bg-blue-950 rounded-md w-[266px] py-2 text-white">
+          <button className="bg-blue-950 rounded-md w-[266px] py-2 text-white hover:text-blue-100">
             < Link href={'/objects'}>Ir a objetos</Link>
           </button>
         </article>
@@ -31,7 +31,7 @@ export default function Home() {
       <article className="bg-[#F5E8CA] h-52 flex flex-col items-center gap-6 ">
         <h3 className="font-bold text-2xl mt-6">¿Perdiste algo valioso? ¿Encontraste un objeto perdido? ¡Regístralo ahora y comienza la búsqueda!</h3>
         <button className="bg-blue-950 rounded-md py-2 w-[266px] text-white">
-          <Link href={'/ad'}>Añadir anuncio</Link>
+          <Link href={'/ad'} className="hover:text-blue-100">Añadir anuncio</Link>
         </button>
         <p className="">Ahorra tiempo y preocupaciones a la hora de encontrar un objeto perdido o robado, ya sea en el parque, hoteles, policía, taxis, aeropuertos, etc.</p>
       </article>
