@@ -15,11 +15,12 @@ export const getObjects = async () => {
             date: objetos.date,
             category: objetos.category,
             id_user: objetos.id_user,
-            phone: usuarios.phone // Selecciona el número de teléfono del usuario
+            phone: usuarios.phone, // Selecciona el número de teléfono del usuario
+            state: objetos.state
         })
         .from(objetos)
         .innerJoin(usuarios, eq(objetos.id_user, usuarios.id_user));
-    return objects
+    return objects;
 } 
 
 

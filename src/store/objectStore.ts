@@ -14,12 +14,15 @@ export const objectStore = create<Props>((set) =>
 
 
     recuperateObjects: async () => {
-        const objects = await getObjects()
-        set(state => ({
-            ...state,
-            objects
-        }))
+        const objects = await getObjects();
+        set({ objects }); // Asignar directamente aquí
     },
+    //     const objects = await getObjects()
+    //     set(state => ({
+    //         ...state,
+    //         objects
+    //     }))
+    // },
 
     
 
