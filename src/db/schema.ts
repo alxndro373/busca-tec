@@ -30,5 +30,6 @@ export const objetos = pgTable("objetos", {
     date: date("fecha_encontrada"),
     state: boolean("estado_objeto").default(false),
     image_url: text("imagen"),
-    category: text("categorias")
+    category: text("categorias"),
+    id_user: text("id_usuario").references(() => usuarios.id_user)
 })

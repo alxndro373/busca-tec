@@ -1,7 +1,8 @@
 "use client"
 
 import { objectType } from "@/types/objectType"
-import { FC} from "react"
+import {useState, FC} from "react"
+
 
 interface Props {
     objects: objectType[]
@@ -9,13 +10,26 @@ interface Props {
 
 const ObjectsList: FC<Props> = ({objects}) => {
 
-       
+
+    const [selectedObject, setSelectedObject] = useState<objectType | null>(null);
+
+    const handleObjectClick = (object: objectType) => {
+        setSelectedObject(object);
+    };
+
+    const closeModal = () => setSelectedObject(null);
+
+    const handleWhatsAppRedirect = (phone: string) => {
+        const message = "¡Hola! Estoy interesado en el objeto que registraste.";
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank"); // Abre WhatsApp en una nueva pestaña
+    };
 
     return (
-         
-        <div className="flex gap-10 mb-10 w-11/12 ml-auto mr-auto">
+        <>
+        <div className="flex gap-10 mb-10 w-11/12 ml-auto mr-auto cursor-pointer">
         {objects && objects.map(object => (
-            <div className="w-1/5 bg-white shadow-md" key={object.id_object}>
+            <div className="w-1/5 bg-white shadow-md" key={object.id_object} onClick={() => handleObjectClick(object)}>
                 <img 
                 src="https://png.pngtree.com/png-clipart/20210312/original/pngtree-question-mark-pattern-png-image_6070996.jpg" 
                 alt="imagen del objeto perdido" 
@@ -30,6 +44,37 @@ const ObjectsList: FC<Props> = ({objects}) => {
             </div>
         ))}
         </div>
+        {selectedObject && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="bg-white p-6 w-1/3 rounded-lg shadow-lg flex flex-col items-center">
+                    <div className="flex w-full">
+                        <div className="flex-1">
+                            <button onClick={closeModal} className="text-red-500 font-bold mb-4">Cerrar</button>
+                            <h4 className="font-bold text-2xl mb-2">{selectedObject.name_object}</h4>
+                            <p><strong>Estado:</strong> {selectedObject.state ? "Encontrado" : "Perdido"}</p>
+                            <p><strong>Fecha:</strong> {selectedObject.date}</p>
+                            <p><strong>Categoría:</strong> {selectedObject.category}</p>
+                            <p><strong>Descripción:</strong> {selectedObject.description}</p>
+                            <p><strong>Lugar:</strong> {selectedObject.localization}</p>
+                            <button 
+                                onClick={() => handleWhatsAppRedirect(selectedObject.phone)}
+                                className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+                            >
+                                Reclamar por WhatsApp
+                            </button>
+                        </div>
+                        <div className="w-1/3 ml-4">
+                            <img
+                                src="https://png.pngtree.com/png-clipart/20210312/original/pngtree-question-mark-pattern-png-image_6070996.jpg"
+                                alt="imagen del objeto perdido"
+                                className="w-full h-full object-cover rounded-lg"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     )
 }
 

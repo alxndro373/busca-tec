@@ -6,6 +6,8 @@ import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { getUserWithEmail } from "@/actions/userAction"
 
 
 export default function LostObjects() {
@@ -13,6 +15,7 @@ export default function LostObjects() {
     
     const [startDate, setStartDate] = useState<Date|null>(new Date());
 
+   const {data: session} = useSession()
 
     const {register, handleSubmit} = useForm<objectType>({
         defaultValues: {
@@ -21,9 +24,15 @@ export default function LostObjects() {
             localization:""  
         },
     })
-    const onSubmit : SubmitHandler<objectType> = ({name_object,description,localization,category}) => {
-        addObject(name_object,description,localization,startDate,category)
-        alert("Objeto perdido publicado exitosamente")
+    const onSubmit : SubmitHandler<objectType> = async ({name_object,description,localization,category}) => {
+        try {
+            const user = await getUserWithEmail(session?.user?.email as string)
+            const id = user[0].id_user
+            await addObject(name_object,description,localization,startDate,category, id)
+            alert("Objeto perdido publicado exitosamente")
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
