@@ -12,6 +12,7 @@ export const getObjects = async () => {
         localization: objetos.localization,
         date: objetos.date,
         category: objetos.category,
+        image: objetos.image_url,
         id_user: objetos.id_user,
         phone: usuarios.phone, // Selecciona el número de teléfono del usuario
         state: objetos.state
@@ -22,13 +23,15 @@ export const getObjects = async () => {
 } 
 
 
-export const addObject = async (name:string,description:string| null,localization:string, date: Date | null, category: string | null, id_user:string|undefined) => {
+export const addObject = async (name:string,description:string| null,localization:string, date: Date | null, category: string | null,image_url:string,id_user:string|undefined) => {
     await db.insert(objetos).values({
         name_object: name,
         description,
         localization,
         date: date?.toISOString().split("t")[0],
         category,
+        image_url,
         id_user
     })
 }
+

@@ -1,6 +1,6 @@
 "use client"
 
-import { addObject } from "@/actions/objectAction"
+import { addObject} from "@/actions/objectAction"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
@@ -9,38 +9,51 @@ import React, { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { getUserWithEmail } from "@/actions/userAction"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { imageSchema } from "@/lib/zod"
+import { objectSchema } from "@/lib/zod"
 
 
 export default function LostObjects() {
 
     const fileInputRef = useRef<HTMLInputElement|null>(null)
     const [startDate, setStartDate] = useState<Date|null>(new Date());
+    const [image,setImage] = useState<string|undefined>(undefined)
+    const [loader,setLoader] = useState<boolean>(false)
 
    const {data: session} = useSession()
 
    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files?.[0])
     const file = e.target.files?.[0] 
     if(file) setValue("file", file , {shouldValidate: true})
+    setImage(file?.name)
    }
 
     const {register, handleSubmit, setValue, formState: {errors}} = useForm<objectType>({
-        resolver: zodResolver(imageSchema),
+        resolver: zodResolver(objectSchema),
         defaultValues: {
             name_object: "",
             description:"" ,
             localization:""  
         },
     })
-    const onSubmit : SubmitHandler<objectType> = async ({name_object,description,localization,category}) => {
+    const onSubmit : SubmitHandler<objectType> = async ({name_object,description,localization,category,file}) => {
+        setLoader(true)
         try {
             const user = await getUserWithEmail(session?.user?.email as string)
             const id = user[0].id_user
-            await addObject(name_object,description,localization,startDate,category, id)
+            const formData = new FormData()
+            formData.append("file", file)
+            const response = await fetch('/api/upload', {
+                method: "POST",
+                body: formData
+            })
+            const {image_url} = await response.json()
+            await addObject(name_object,description,localization,startDate,category,image_url,id)
             alert("Objeto perdido publicado exitosamente")
         } catch (error) {
             console.log(error)
+            alert("no se pudo subir el objeto perdido")
+        }finally{
+            setLoader(false)
         }
     }
 
@@ -101,10 +114,11 @@ export default function LostObjects() {
                             <button onClick={() => fileInputRef.current?.click()} type="button" className="bg-blue-950 p-2 text-white rounded-md">
                                 Subir Foto
                             </button>
+                            {image && <span>{image}</span>}
                             {errors.file && <span className="text-red-500">{errors.file.message}</span>}
                             <input onChange={onChange} ref={fileInputRef} className="hidden" type="file" />
-                            <p>☢️El tamaño maximo permitido por archivo es 5.00MB ☢️El tamaño maximo de archivo total permitido es de 15.00MB</p>
-                            <p>☢️Maximo 3 archivos permitidos</p>
+                            <p>☢️El tamaño maximo permitido del archivo es de 5.00MB ☢️</p>
+                            <p>☢️Maximo 1 archivo permitidos</p>
                         </div>
                         <div className="mb-10">
                             <div className=" text-center mb-2">
@@ -116,7 +130,7 @@ export default function LostObjects() {
                             <label className="ml-2 text-sm">Acepto los <strong>terminos y condiciones</strong> </label>
                             </div>
                             <div className="text-center">
-                            <button className="bg-blue-950 py-2 w-[266px] text-white ">Guardar</button>
+                            <button className="bg-blue-950 py-2 w-[266px] text-white ">{loader ? "Subiendo..." : "Guardar"}</button>
                             </div>
                         </div>
                     </section>
