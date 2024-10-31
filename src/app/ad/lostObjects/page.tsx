@@ -5,19 +5,28 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react"
+import React, { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { getUserWithEmail } from "@/actions/userAction"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { imageSchema } from "@/lib/zod"
 
 
 export default function LostObjects() {
 
-    
+    const fileInputRef = useRef<HTMLInputElement|null>(null)
     const [startDate, setStartDate] = useState<Date|null>(new Date());
 
    const {data: session} = useSession()
 
-    const {register, handleSubmit} = useForm<objectType>({
+   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files?.[0])
+    const file = e.target.files?.[0] 
+    if(file) setValue("file", file , {shouldValidate: true})
+   }
+
+    const {register, handleSubmit, setValue, formState: {errors}} = useForm<objectType>({
+        resolver: zodResolver(imageSchema),
         defaultValues: {
             name_object: "",
             description:"" ,
@@ -89,7 +98,11 @@ export default function LostObjects() {
                         <div className="bg-gray-100 flex flex-col gap-6 items-center mb-10">
                             <h3 className="text-gray-600 text-xl font-bold">Arrastar y Soltar</h3>
                             <p>o</p>
-                            <button className="bg-blue-950 p-2 text-white rounded-md">Subir foto</button>
+                            <button onClick={() => fileInputRef.current?.click()} type="button" className="bg-blue-950 p-2 text-white rounded-md">
+                                Subir Foto
+                            </button>
+                            {errors.file && <span className="text-red-500">{errors.file.message}</span>}
+                            <input onChange={onChange} ref={fileInputRef} className="hidden" type="file" />
                             <p>☢️El tamaño maximo permitido por archivo es 5.00MB ☢️El tamaño maximo de archivo total permitido es de 15.00MB</p>
                             <p>☢️Maximo 3 archivos permitidos</p>
                         </div>
