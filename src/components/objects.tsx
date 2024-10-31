@@ -63,7 +63,7 @@ const ObjectsList: FC<Props> = ({objects}) => {
                                 Reclamar por WhatsApp
                             </button>
                         </div>
-                        <div className="w-1/3 ml-4">
+                        <div className="w-2/5 ml-4">
                             <img
                                 src={selectedObject.image}
                                 alt="imagen del objeto perdido"
