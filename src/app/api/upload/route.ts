@@ -2,6 +2,8 @@ import cloudinary from "@/lib/cloudinary"
 import { NextResponse } from "next/server"
 
 
+
+
 export async function POST(request: Request){
 
     const data = await request.formData()
@@ -19,8 +21,7 @@ export async function POST(request: Request){
         }).end(buffer)
     })
 
-    const url = (res as any).secure_url
+    
 
-
-    return NextResponse.json({image_url: url})
+    return NextResponse.json({image: res})
 }

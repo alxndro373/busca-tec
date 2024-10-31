@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react"
 import { getUserWithEmail } from "@/actions/userAction"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { objectSchema } from "@/lib/zod"
+import Swal from "sweetalert2"
 
 
 export default function LostObjects() {
@@ -46,9 +47,14 @@ export default function LostObjects() {
                 method: "POST",
                 body: formData
             })
-            const {image_url} = await response.json()
-            await addObject(name_object,description,localization,startDate,category,image_url,id)
-            alert("Objeto perdido publicado exitosamente")
+            const data = await response.json()
+            console.log(data)
+            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id)
+            Swal.fire({
+                title: `${name_object}`,
+                text: "Publicado Exitosamente",
+                icon: "success"
+              })
         } catch (error) {
             console.log(error)
             alert("no se pudo subir el objeto perdido")
