@@ -30,8 +30,8 @@ export const registerSchema = object({
 })
 
 
-export const imageSchema = z.object({
-  file: z.instanceof(File)
+export const objectSchema = z.object({
+  file: z.instanceof(File, {message: "selecciona una imagen"})
   .refine(file => {
     return file.size < 5 * 1024 * 1024 
   }, {message: "la imagen debe ser menos de 5MB"})
@@ -40,4 +40,9 @@ export const imageSchema = z.object({
   }, {
     message: 'Solo se permiten archivos JPEG y PNG y JPG.',
   }),
+  name_object: string().min(4,"El nombre del objeto es requerido"),
+  description: string().optional(),
+  localization: string().min(1,"La localización es requerida"),
+  category: string().optional(),
+  
 })
