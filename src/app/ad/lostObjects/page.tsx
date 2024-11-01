@@ -2,7 +2,6 @@
 
 import { addObject} from "@/actions/objectAction"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import React, { useRef, useState } from "react"
