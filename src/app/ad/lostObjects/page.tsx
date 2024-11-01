@@ -11,6 +11,7 @@ import { getUserWithEmail } from "@/actions/userAction"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { objectSchema } from "@/lib/zod"
 import Swal from "sweetalert2"
+import { z } from "zod"
 
 
 export default function LostObjects() {
@@ -28,7 +29,7 @@ export default function LostObjects() {
     setImage(file?.name)
    }
 
-    const {register, handleSubmit, setValue, formState: {errors}} = useForm<objectType>({
+    const {register, handleSubmit, setValue, formState: {errors}} = useForm<z.infer<typeof objectSchema>>({
         resolver: zodResolver(objectSchema),
         defaultValues: {
             name_object: "",
@@ -36,7 +37,7 @@ export default function LostObjects() {
             localization:""  
         },
     })
-    const onSubmit : SubmitHandler<objectType> = async ({name_object,description,localization,category,file}) => {
+    const onSubmit : SubmitHandler<z.infer<typeof objectSchema>> = async ({name_object,description,localization,category,file}) => {
         setLoader(true)
         try {
             const user = await getUserWithEmail(session?.user?.email as string)
@@ -48,7 +49,6 @@ export default function LostObjects() {
                 body: formData
             })
             const data = await response.json()
-            console.log(data)
             await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id)
             Swal.fire({
                 title: `${name_object}`,

@@ -20,8 +20,7 @@ export type objectType = {
     date: string | null,
     state: boolean | null,
     category: string | null,
-    image: string,
-    file: File,
-    id_user: string | null ,
+    image: string | null,
+    id_user: string | null,
     phone: string
 }

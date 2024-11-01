@@ -27,7 +27,7 @@ const ObjectsList: FC<Props> = ({objects}) => {
 
     return (
         <>
-        <div className="flex gap-10 mb-10 w-11/12 ml-auto mr-auto cursor-pointer">
+        <div className="flex flex-wrap gap-10 mb-10 w-11/12 ml-auto mr-auto cursor-pointer">
         {objects && objects.map(object => (
             <div className="w-1/5 bg-white shadow-md" key={object.id_object} onClick={() => handleObjectClick(object)}>
                 <img 

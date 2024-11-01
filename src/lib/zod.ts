@@ -41,8 +41,8 @@ export const objectSchema = z.object({
     message: 'Solo se permiten archivos JPEG y PNG y JPG.',
   }),
   name_object: string().min(4,"El nombre del objeto es requerido"),
-  description: string().optional(),
+  description: string(),
   localization: string().min(1,"La localización es requerida"),
-  category: string().optional(),
+  category: string()
   
 })
