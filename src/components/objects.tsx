@@ -31,7 +31,7 @@ const ObjectsList: FC<Props> = ({objects}) => {
         {objects && objects.map(object => (
             <div className="w-1/5 bg-white shadow-md" key={object.id_object} onClick={() => handleObjectClick(object)}>
                 <img 
-                src={object.image} 
+                src={object.image as string} 
                 alt="imagen del objeto perdido" 
                 className="w-full h-[200px] object-cover" />
                 <div>
@@ -65,7 +65,7 @@ const ObjectsList: FC<Props> = ({objects}) => {
                         </div>
                         <div className="w-2/5 ml-4">
                             <img
-                                src={selectedObject.image}
+                                src={selectedObject.image as string}
                                 alt="imagen del objeto perdido"
                                 className="w-full h-full object-cover rounded-lg"
                             />
