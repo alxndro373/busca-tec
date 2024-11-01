@@ -40,6 +40,16 @@ export default function LostObjects() {
         setLoader(true)
         try {
             const user = await getUserWithEmail(session?.user?.email as string)
+            console.log(user)
+            console.log(user[0])
+            if(!user || user.length === 0){
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Ha ocurrido un error al intentar cargar tus datos. Intenta refrescar la página o iniciar sesión de nuevo.",
+                  });
+                return 
+            }
             const id = user[0].id_user
             const formData = new FormData()
             formData.append("file", file)
@@ -56,7 +66,11 @@ export default function LostObjects() {
               })
         } catch (error) {
             console.log(error)
-            alert("no se pudo subir el objeto perdido")
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No se pudo subir el objeto perdido. Intentalo más tarde.",
+              })
         }finally{
             setLoader(false)
         }
