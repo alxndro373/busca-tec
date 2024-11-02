@@ -30,7 +30,7 @@ export default  function Objects(){
                 </select>
             </div>
              
-            < ObjectsList objects={data} />
+            {data.length > 0 ?  < ObjectsList objects={data} />  : <p>No hay objetos Perdios</p>}
             
         </main>
     )

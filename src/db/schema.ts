@@ -28,10 +28,8 @@ export const objetos = pgTable("objetos", {
     localization: text("localizacion")
     .notNull(),
     date: date("fecha_encontrada"),
-    state: boolean("estado_objeto").default(false),
+    state: boolean("estado_objeto"),
     image_url: text("imagen"),
     category: text("categorias"),
-    id_user: text("id_usuario").references(() => usuarios.id_user),
-    // phone: text("numero_telefono")
-    
+    id_user: text("id_usuario").references(() => usuarios.id_user)
 })

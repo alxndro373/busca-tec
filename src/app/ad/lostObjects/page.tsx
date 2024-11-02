@@ -1,23 +1,35 @@
 "use client"
 
-import { addObject } from "@/actions/objectAction"
+import { addObject} from "@/actions/objectAction"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { objectType } from "@/types/objectType"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-// import { useContext, useState } from "react"
-// import { usuarios } from "@/db/schema"
-import { useState } from "react"
+import React, { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
-// import { SessionProvider } from "next-auth/react";
+import { getUserWithEmail } from "@/actions/userAction"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { objectSchema } from "@/lib/zod"
+import Swal from "sweetalert2"
+import { z } from "zod"
+
 
 export default function LostObjects() {
-    
+
+    const fileInputRef = useRef<HTMLInputElement|null>(null)
     const [startDate, setStartDate] = useState<Date|null>(new Date());
-    const {data: session, status } = useSession();
+    const [image,setImage] = useState<string|undefined>(undefined)
+    const [loader,setLoader] = useState<boolean>(false)
 
+   const {data: session} = useSession()
 
-    const {register, handleSubmit} = useForm<objectType>({
+   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] 
+    if(file) setValue("file", file , {shouldValidate: true})
+    setImage(file?.name)
+   }
+
+    const {register, handleSubmit, setValue, formState: {errors}} = useForm<z.infer<typeof objectSchema>>({
+        resolver: zodResolver(objectSchema),
         defaultValues: {
             name_object: "",
             description:"" ,
@@ -25,30 +37,46 @@ export default function LostObjects() {
             category: "", 
         },
     })
-    const onSubmit : SubmitHandler<objectType> = async ({name_object,description,localization,category}) => {
-        
-        const id_user = session?.user?.id;
-        
-        if(!id_user) {
-            alert("Error: No se econtró el ID del usuario. Asegúrate de estar logueado.");
-            return;
-        }
-
+    const onSubmit : SubmitHandler<z.infer<typeof objectSchema>> = async ({name_object,description,localization,category,file}) => {
+        setLoader(true)
         try {
-            await addObject(name_object, description, localization, startDate, category, id_user);
-            alert("Objeto perdido publicado exitosamente");
+            const user = await getUserWithEmail(session?.user?.email as string)
+            console.log(user)
+            console.log(user[0])
+            if(!user || user.length === 0){
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Ha ocurrido un error al intentar cargar tus datos. Intenta refrescar la página o iniciar sesión de nuevo.",
+                  });
+                return 
+            }
+            const id = user[0].id_user
+            const formData = new FormData()
+            formData.append("file", file)
+            const response = await fetch('/api/upload', {
+                method: "POST",
+                body: formData
+            })
+            const data = await response.json()
+            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id, false)
+            Swal.fire({
+                title: `${name_object}`,
+                text: "Publicado Exitosamente",
+                icon: "success"
+              })
         } catch (error) {
-            alert("Error al publicar el objeto: " + (error instanceof Error ? error.message : "Error desconocido"));
-        }   
+            console.log(error)
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No se pudo subir el objeto perdido. Intentalo más tarde.",
+              })
+        }finally{
+            setLoader(false)
+        }
     }
 
-    if (status === "loading") {
-        return <div>Cargando...</div>;
-    }
-
-    if (!session) {
-        return <div>No estás autenticado. Por favor inicia sesión.</div>;
-    }
 
     return (
         <>
@@ -103,9 +131,14 @@ export default function LostObjects() {
                         <div className="bg-gray-100 flex flex-col gap-6 items-center mb-10">
                             <h3 className="text-gray-600 text-xl font-bold">Arrastar y Soltar</h3>
                             <p>o</p>
-                            <button className="bg-blue-950 p-2 text-white rounded-md">Subir foto</button>
-                            <p>☢️El tamaño maximo permitido por archivo es 5.00MB ☢️El tamaño maximo de archivo total permitido es de 15.00MB</p>
-                            <p>☢️Maximo 3 archivos permitidos</p>
+                            <button onClick={() => fileInputRef.current?.click()} type="button" className="bg-blue-950 p-2 text-white rounded-md">
+                                Subir Foto
+                            </button>
+                            {image && <span>{image}</span>}
+                            {errors.file && <span className="text-red-500">{errors.file.message}</span>}
+                            <input onChange={onChange} ref={fileInputRef} className="hidden" type="file" />
+                            <p>☢️El tamaño maximo permitido del archivo es de 5.00MB ☢️</p>
+                            <p>☢️Maximo 1 archivo permitidos</p>
                         </div>
                         <div className="mb-10">
                             <div className=" text-center mb-2">
@@ -117,7 +150,7 @@ export default function LostObjects() {
                             <label className="ml-2 text-sm">Acepto los <strong>terminos y condiciones</strong> </label>
                             </div>
                             <div className="text-center">
-                            <button className="bg-blue-950 py-2 w-[266px] text-white ">Guardar</button>
+                            <button className="bg-blue-950 py-2 w-[266px] text-white ">{loader ? "Subiendo..." : "Guardar"}</button>
                             </div>
                         </div>
                     </section>
