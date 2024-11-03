@@ -8,26 +8,18 @@ export default function UserFooter(){
                     <h3 className="font-semibold mb-2">NUESTRA COMPAÑIA</h3>
                     <ul>
                         <li>
-                            <Link href={""} className="hover:text-blue-400">Acerca de nosotros</Link>
+                            <Link href={"/terms/us"} className="hover:text-blue-400">Acerca de nosotros</Link>
                         </li>
                     </ul>
                 </article>
                 <article>
                     <h3 className="font-semibold mb-2">POLITICAS</h3>
                     <ul>
-                        <li className="mb-2"><Link href={""} className="hover:text-blue-400">Aviso de privacidad</Link></li>
-                        <li className="mb-2"><Link href={""} className="hover:text-blue-400">Términos y condiciones</Link></li>
-                        <li className="mb-2"><Link href={""} className="hover:text-blue-400">Politicas de cookies</Link></li>
+                        <li className="mb-2"><Link href={"/terms/privacy"} className="hover:text-blue-400">Aviso de privacidad</Link></li>
+                        <li className="mb-2"><Link href={"/terms/termsConditions"} className="hover:text-blue-400">Términos y condiciones</Link></li>
+                        <li className="mb-2"><Link href={"/terms/cookiesPol"} className="hover:text-blue-400">Politicas de cookies</Link></li>
                     </ul>
                 </article>
-
-                {/* <article>
-                    <h3 className="font-semibold mb-2">DEJANOS AYUDARTE</h3>
-                    <ul>
-                        <li className="mb-2">Dudas y comentarios</li>
-                        <li>Preguntas frecuentes</li>
-                    </ul>
-                </article> */}
             </section>
         </footer>
     )

@@ -1,5 +1,7 @@
 import { auth, signOut } from "@/auth"
 import Link from "next/link"
+import Image from "next/image";
+import image2 from "@/assets/image 2.png"
 
 
 
@@ -9,7 +11,16 @@ export default async function UserHeader(){
 
     return (
         <header className="pt-4">
-            <nav className="mr-4">
+            <nav className="flex justify-between mr-4">
+                <Link href={'/'} className="">
+                    <Image
+                        src={image2}
+                        alt="logo"
+                        width={70}
+                        className="rounded-3xl px-2 mb-1"
+                        
+                    />  
+                </Link>
                 <ul className="flex justify-end gap-4 items-center">
                     <li>
                         <Link href={"/"} className="hover:text-blue-400">Inicio</Link>
