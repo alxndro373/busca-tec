@@ -7,12 +7,13 @@ export default async function UserHeader(){
 
     const session = await auth()
 
+
     return (
         <header className="pt-4">
             <nav className="mr-4">
                 <ul className="flex justify-end gap-4 items-center">
                     <li>
-                        <Link href={"/"}>Home</Link>
+                        <Link href={"/"}>Inicio</Link>
                     </li>
                     <li>
                         <Link href={'/objects'}>OBJETOS</Link>
@@ -20,6 +21,9 @@ export default async function UserHeader(){
                 
                     {
                         session ? <>
+                            <li>
+                                <Link href={'my-objects'}>Mis objetos</Link>
+                            </li>
                             <li>
                                 <span>Bienvenido: {session.user?.name}</span>
                             </li>

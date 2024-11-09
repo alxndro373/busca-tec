@@ -1,13 +1,22 @@
 "use client"
 
+import Loader from "@/components/loader"
 import ObjectsList from "@/components/objects"
 import { objectStore } from "@/store/objectStore"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default  function Objects(){
 
     const {recuperateObjects} =  objectStore()
+    const [loading, setLoading] = useState<boolean>(true)
    
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setLoading(false)
+      },1000)
+      return () => clearTimeout(timer)
+    },[])
+
     useEffect(() => {
 
         recuperateObjects()
@@ -29,8 +38,14 @@ export default  function Objects(){
                     <option value="">Filtrar por</option>
                 </select>
             </div>
-             
-            {data.length > 0 ?  < ObjectsList objects={data} />  : <p>No hay objetos Perdios</p>}
+        
+
+
+            {
+              loading ?  <Loader></Loader> :    
+              data.length > 0 ?  < ObjectsList objects={data} buttonText="Encontre tu objeto.Ir a WhatsApp" option={true} />  
+                : <p className="text-center">No hay objetos Perdios</p>
+            }
             
         </main>
     )
