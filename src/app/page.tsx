@@ -29,11 +29,11 @@ export default function Home() {
         </article>
       </main>
       <article className="bg-[#F5E8CA] h-52 flex flex-col items-center gap-6 ">
-        <h3 className="font-bold text-2xl mt-6">¿Perdiste algo valioso? ¿Encontraste un objeto perdido? ¡Regístralo ahora y comienza la búsqueda!</h3>
+        <h3 className="font-bold text-2xl mt-6">¿Perdiste algo valioso? ¡Regístralo ahora y comienza la búsqueda!</h3>
         <button className="bg-blue-950 rounded-md py-2 w-[266px] text-white">
-          <Link href={'/ad'} className="hover:text-blue-100">Añadir anuncio</Link>
+          <Link href={'/ad/lostObjects'} className="hover:text-blue-100">Añadir anuncio</Link>
         </button>
-        <p className="">Ahorra tiempo y preocupaciones a la hora de encontrar un objeto perdido o robado, ya sea en el parque, hoteles, policía, taxis, aeropuertos, etc.</p>
+        <p className="">Ahorra tiempo y preocupaciones a la hora de encontrar un objeto perdido, ya sea en el parque, hoteles, policía, taxis, aeropuertos, etc.</p>
       </article>
       <Image
         src={image3}

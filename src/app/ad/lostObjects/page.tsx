@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { objectSchema } from "@/lib/zod"
 import Swal from "sweetalert2"
 import { z } from "zod"
-import Link from "next/link";
 
 export default function LostObjects() {
 
@@ -59,7 +58,7 @@ export default function LostObjects() {
                 body: formData
             })
             const data = await response.json()
-            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id, false)
+            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id)
             Swal.fire({
                 title: `${name_object}`,
                 text: "Publicado Exitosamente",
@@ -89,7 +88,7 @@ export default function LostObjects() {
                         <input 
                         className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" 
                         type="text" 
-                        placeholder="escribe que tipo de objeto es." 
+                        placeholder="Escribe que tipo de objeto es." 
                         {...register("name_object", {required:true})}
                         />
                     </div>

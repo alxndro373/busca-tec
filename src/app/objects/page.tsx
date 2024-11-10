@@ -1,28 +1,42 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Loader from "@/components/loader"
 import ObjectsList from "@/components/objects";
 import { objectStore } from "@/store/objectStore";
+import { useState, useEffect } from "react";
 
 export default function Objects() {
     const { recuperateObjects } = objectStore()
+    const [loading, setLoading] = useState<boolean>(true)
     const [selectedCategory, setSelectedCategory] = useState("")
     const [sortOrder, setSortOrder] = useState("")
     const [selectedState, setSelectedState] = useState("")
     const [selectedDate, setSelectedDate] = useState("")
-    const data = objectStore(state => state.objects)
+    
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+          setLoading(false)
+        },1000)
+        return () => clearTimeout(timer)
+      },[]);
+    
+      
+    useEffect(() => {
+
         recuperateObjects()
-    }, []);
+
+    },[]);
+
+    const data = objectStore(state => state.objects)
 
     // Filtrar objetos
     const filteredData = data.filter(object => {
         const matchesCategory = selectedCategory ? object.category === selectedCategory : true
-        const matchesState = selectedState ? object.state === (selectedState === "1") : true
+        const matchesState = selectedState ? object.state === (selectedState === "1") : !object.state
         const matchesDate = selectedDate ? object.date && object.date.substring(0, 10) === selectedDate : true
         return matchesCategory && matchesState && matchesDate;
-    });
+    })
 
     // Ordenar objetos según el orden seleccionado
     const sortedData = () => {
@@ -32,7 +46,7 @@ export default function Objects() {
             return filteredData.sort((a, b) => b.name_object.localeCompare(a.name_object))
         }
         return filteredData;
-    };
+    }
 
     return (
         <main>
@@ -62,7 +76,7 @@ export default function Objects() {
                     <option value="">Todas las categorías</option>
                     <option value="Accesorios Personales">Accesorios Personales</option>
                     <option value="Documentos y Tarjetas">Documentos y Tarjetas</option>
-                    <option value="Electrónica">Electrónica</option>
+                    <option value="Electronica">Electrónica</option>
                     <option value="Ropa y Calzado">Ropa y Calzado</option>
                     <option value="Otro">Otro</option>
                 </select>
@@ -89,11 +103,12 @@ export default function Objects() {
                 </div>
             </div>
 
-            {sortedData().length > 0 ? (
-                <ObjectsList objects={sortedData()} />
-            ) : (
-                <p>No hay objetos perdidos</p>
-            )}
+            {
+              loading ? <Loader /> :    
+              sortedData().length > 0 ? <ObjectsList objects={sortedData()} buttonText="Encontre tu objeto.Ir a WhatsApp" option={true} />
+              : <p className="text-center">No hay objetos perdidos</p>
+            }
         </main>
     );
+    
 }
