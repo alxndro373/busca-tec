@@ -36,12 +36,15 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
                     <p><strong>Categoría:</strong> {selectedObject.category}</p>
                     <p><strong>Descripción:</strong> {selectedObject.description}</p>
                     <p><strong>Lugar:</strong> {selectedObject.localization}</p>
-                    <button 
-                        onClick={() => handleAction()}
-                        className="mt-4 bg-green-500 text-sm text-white px-4 py-2 rounded"
-                    >
-                        {buttonText}
-                    </button>
+
+                    {!selectedObject.state && (
+                        <button 
+                            onClick={() => handleAction()}
+                            className="mt-4 bg-green-500 text-sm text-white px-4 py-2 rounded"
+                        >
+                            {buttonText}
+                        </button>
+                    )}
                 </div>
                 <div className="w-2/5 ml-4">
                     <img

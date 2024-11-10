@@ -105,7 +105,7 @@ export default function Objects() {
 
             {
               loading ? <Loader /> :    
-              sortedData().length > 0 ? <ObjectsList objects={sortedData()} buttonText="Encontre tu objeto.Ir a WhatsApp" option={true} />
+              sortedData().length > 0 ? <ObjectsList objects={sortedData()} buttonText="Encontre tu objeto. Ir a WhatsApp" option={true} />
               : <p className="text-center">No hay objetos perdidos</p>
             }
         </main>
