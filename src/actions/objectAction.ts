@@ -12,7 +12,7 @@ export const getObjects = async () => {
         localization: objetos.localization,
         date: objetos.date,
         category: objetos.category,
-        image: objetos.image_url,
+        image_url: objetos.image_url,
         id_user: objetos.id_user,
         phone: usuarios.phone, // Selecciona el número de teléfono del usuario
         state: objetos.state
@@ -23,7 +23,7 @@ export const getObjects = async () => {
 } 
 
 
-export const addObject = async (name:string,description:string| null,localization:string, date: Date | null, category: string | null,image_url:string,id_user:string|undefined, state:boolean) => {
+export const addObject = async (name:string,description:string| null,localization:string, date: Date | null, category: string | null,image_url:string,id_user:string|undefined) => {
     await db.insert(objetos).values({
         name_object: name,
         description,
@@ -31,8 +31,17 @@ export const addObject = async (name:string,description:string| null,localizatio
         date: date?.toISOString().split("t")[0],
         category,
         image_url,
-        id_user,
-        state,
+        id_user
     })
+}
+
+
+export const getObjectsByUser = async (id_user: string) => {
+  const objects = await db.select().from(objetos).where(eq(objetos.id_user,id_user))
+  return objects
+}
+
+export const updateObjectState = async (id_object: string, state: boolean) => {
+    await db.update(objetos).set({state}).where(eq(objetos.id_object,id_object))
 }
 

@@ -9,6 +9,7 @@ export default async function UserHeader(){
 
     const session = await auth()
 
+
     return (
         <header className="pt-4">
             <nav className="flex justify-between mr-4">
@@ -32,6 +33,9 @@ export default async function UserHeader(){
                     {
                         session ? <>
                             <li>
+                                <Link href={'my-objects'}>Mis objetos</Link>
+                            </li>
+                            <li>
                                 <span>Bienvenido: {session.user?.name}</span>
                             </li>
                             <form action={async () => {
@@ -39,7 +43,7 @@ export default async function UserHeader(){
                                 await signOut()
                             }}>
                                 <button className="bg-blue-950 text-white py-2 px-4 rounded-md mb-1 mr-1 hover:text-blue-100">
-                                    <Link href={"/ad"}>Añadir anuncio</Link>
+                                    <Link href={"/ad/lostObjects"}>Añadir anuncio</Link>
                                 </button>
                                 <button type="submit" className="bg-red-500 text-white py-2 px-4 rounded-md mb-1 hover:text-red-100">Cerrar Sesion</button>
                             </form>

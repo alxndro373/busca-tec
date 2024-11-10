@@ -1,15 +1,4 @@
 
-/*
-export type objectType = {
-    id_object: string
-    name_object: string,
-    description: string ,
-    localization: string
-    state: boolean | null
-    date: string | null
-    image_url: string | null
-}
-*/
 
 export type objectType = {
     id_object: string,
@@ -19,7 +8,10 @@ export type objectType = {
     date: string | null,
     state: boolean | null,
     category: string | null,
-    image: string | null | undefined,
+    image_url: string | null | undefined,
     id_user: string | null,
-    phone: string
+    phone?: string
 }
+
+
+export type objectTypeByUser = Omit<objectType,'phone'>

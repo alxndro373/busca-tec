@@ -12,7 +12,6 @@ import { objectSchema } from "@/lib/zod"
 import Swal from "sweetalert2"
 import { z } from "zod"
 
-
 export default function LostObjects() {
 
     const fileInputRef = useRef<HTMLInputElement|null>(null)
@@ -59,7 +58,7 @@ export default function LostObjects() {
                 body: formData
             })
             const data = await response.json()
-            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id, false)
+            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id)
             Swal.fire({
                 title: `${name_object}`,
                 text: "Publicado Exitosamente",
@@ -89,7 +88,7 @@ export default function LostObjects() {
                         <input 
                         className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" 
                         type="text" 
-                        placeholder="escribe que tipo de objeto es." 
+                        placeholder="Escribe que tipo de objeto es." 
                         {...register("name_object", {required:true})}
                         />
                     </div>
@@ -129,25 +128,36 @@ export default function LostObjects() {
                     <h2 className="text-white bg-blue-950 w-full py-2 text-2xl mb-10">Imagen</h2>
                     <section className="w-4/5 ml-auto mr-auto">
                         <div className="bg-gray-100 flex flex-col gap-6 items-center mb-10">
-                            <h3 className="text-gray-600 text-xl font-bold">Arrastar y Soltar</h3>
-                            <p>o</p>
-                            <button onClick={() => fileInputRef.current?.click()} type="button" className="bg-blue-950 p-2 text-white rounded-md">
+                            
+                            <button onClick={() => fileInputRef.current?.click()} type="button" className="bg-blue-950 p-2 text-white rounded-md mt-10">
                                 Subir Foto
                             </button>
                             {image && <span>{image}</span>}
                             {errors.file && <span className="text-red-500">{errors.file.message}</span>}
                             <input onChange={onChange} ref={fileInputRef} className="hidden" type="file" />
                             <p>☢️El tamaño maximo permitido del archivo es de 5.00MB ☢️</p>
-                            <p>☢️Maximo 1 archivo permitidos</p>
+                            <p className="mb-10">☢️Maximo 1 archivo permitidos</p>
                         </div>
                         <div className="mb-10">
                             <div className=" text-center mb-2">
-                            <input type="checkbox" className="align-middle" required={true} />
-                            <label className="ml-2 text-sm">Acepto la <strong>politica de privacidad</strong></label>
+                                <input type="checkbox" className="align-middle" required={true} />
+                                <label className="ml-2 text-sm">
+                                    Acepto la <strong>
+                                        <a href="/terms/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
+                                            Política de privacidad
+                                        </a>
+                                    </strong>
+                                </label>
                             </div>
                             <div className="text-center mb-4">
-                            <input type="checkbox" className="align-middle" required={true} />
-                            <label className="ml-2 text-sm">Acepto los <strong>terminos y condiciones</strong> </label>
+                                <input type="checkbox" className="align-middle" required={true} />
+                                <label className="ml-2 text-sm">
+                                    Acepto los <strong>
+                                        <a href="/terms/termsConditions" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
+                                            Términos y condiciones
+                                        </a>
+                                    </strong>
+                                </label>
                             </div>
                             <div className="text-center">
                             <button className="bg-blue-950 py-2 w-[266px] text-white ">{loader ? "Subiendo..." : "Guardar"}</button>
