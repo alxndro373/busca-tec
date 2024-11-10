@@ -91,14 +91,14 @@ export default function Objects() {
                     <option value="1">Encontrado</option>
                 </select>
 
-                <div className="w-6/12">
-                    <label htmlFor="filter-date" className="mr-2">Filtrar por fecha:</label>
+                <div className="w-6/12 ml-5">
+                    <label htmlFor="filter-date" className="">Filtrar por fecha:</label>
                     <input
                         type="date"
                         id="filter-date"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)} // Actualiza el estado de la fecha seleccionada
-                        className="border-2 border-gray-500 p-1 rounded"
+                        className="border-2 border-gray-500 p-1 rounded ml-2"
                     />
                 </div>
             </div>

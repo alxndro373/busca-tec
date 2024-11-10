@@ -33,7 +33,7 @@ export default async function UserHeader(){
                     {
                         session ? <>
                             <li>
-                                <Link href={'my-objects'}>Mis objetos</Link>
+                                <Link href={'my-objects'} className="hover:text-blue-400">Mis objetos</Link>
                             </li>
                             <li>
                                 <span>Bienvenido: {session.user?.name}</span>
