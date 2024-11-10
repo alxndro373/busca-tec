@@ -32,7 +32,7 @@ export default function MyObjects() {
   return (
     <main>
 
-      <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center mb-5">Mis Objetos</h1>
+      <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center mb-5">Mis objetos</h1>
 
       {
         loading ? <Loader></Loader>
