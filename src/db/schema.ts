@@ -12,7 +12,7 @@ export const usuarios = pgTable("usuarios",{
     .notNull(),
     phone: varchar("numero_telefono", {length: 10})
     .notNull(),
-    password: varchar("password", {length: 32})
+    password: varchar("password", {length: 60})
     .notNull()
 
 })
