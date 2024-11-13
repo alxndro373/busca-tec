@@ -12,6 +12,7 @@ export default function Objects() {
     const [sortOrder, setSortOrder] = useState("")
     const [selectedState, setSelectedState] = useState("")
     const [selectedDate, setSelectedDate] = useState("")
+    const [searchText, setSearchText] = useState("")
     
 
     useEffect(() => {
@@ -32,10 +33,11 @@ export default function Objects() {
 
     // Filtrar objetos
     const filteredData = data.filter(object => {
+        const matchSearchText = searchText ? object.name_object.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()) : true
         const matchesCategory = selectedCategory ? object.category === selectedCategory : true
         const matchesState = selectedState ? object.state === (selectedState === "1") : !object.state
         const matchesDate = selectedDate ? object.date && object.date.substring(0, 10) === selectedDate : true
-        return matchesCategory && matchesState && matchesDate;
+        return matchSearchText && matchesCategory && matchesState && matchesDate;
     })
 
     // Ordenar objetos según el orden seleccionado
@@ -57,11 +59,18 @@ export default function Objects() {
             <h3 className="text-center font-bold text-2xl mb-2">Todos los objetos</h3>
 
             <div className="flex justify-between border-2 border-gray-200 mb-8 p-4 w-11/12 ml-auto mr-auto">
+                <input
+                    type="text"
+                    placeholder="Buscar por nombre..."
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)} //Actualiza el estado de búsqueda
+                    className="p-2 border-2 border-gray-500 w-full md:w-4/12 mb-4 mr-2 md:mb-0 shadow-md"
+                />
 
                 <select
                     className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white"
                     value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)} // Actualiza el estado del orden
+                    onChange={(e) => setSortOrder(e.target.value)} //Actualiza el estado del orden
                 >
                     <option value="">Ordenar por</option>
                     <option value="asc">Nombre Ascendente</option>
@@ -71,7 +80,7 @@ export default function Objects() {
                 <select
                     className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)} // Actualiza el estado de la categoría seleccionada
+                    onChange={(e) => setSelectedCategory(e.target.value)} //Actualiza el estado de la categoría seleccionada
                 >
                     <option value="">Todas las categorías</option>
                     <option value="Accesorios Personales">Accesorios Personales</option>
@@ -84,7 +93,7 @@ export default function Objects() {
                 <select
                     className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white"
                     value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)} // Actualiza el estado del estado seleccionado
+                    onChange={(e) => setSelectedState(e.target.value)} //Actualiza el estado del estado seleccionado
                 >
                     <option value="">Filtrar por estados</option>
                     <option value="0">Perdido</option>
@@ -97,7 +106,7 @@ export default function Objects() {
                         type="date"
                         id="filter-date"
                         value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)} // Actualiza el estado de la fecha seleccionada
+                        onChange={(e) => setSelectedDate(e.target.value)} //Actualiza el estado de la fecha seleccionada
                         className="border-2 border-gray-500 p-1 rounded ml-2"
                     />
                 </div>
