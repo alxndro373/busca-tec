@@ -41,7 +41,7 @@ export default function Login(){
                 <input type="password" placeholder="Contraseña" className="w-96 py-2" {...form.register("password")} />
                 {form.formState.errors.password && <span className="text-red-500">{form.formState.errors.password.message}</span>}
                 </div>
-                <span className="mb-8 text-white inline-block">¿Olvidaste tu contraseña?</span>
+                <span className="mb-8 text-white inline-block"></span>
                 <div className="flex flex-col gap-8 items-center">
                     <button className="bg-[#D0D9EC] p-2 w-64">Iniciar Sesion</button>
                     <button type="button" onClick={() => router.push("/register")} className="bg-[#D0D9EC] p-2 w-72">¿Nuevo? crear una cuenta.</button>

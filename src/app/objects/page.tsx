@@ -86,7 +86,7 @@ export default function Objects() {
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)} // Actualiza el estado del estado seleccionado
                 >
-                    <option value="">Todos los estados</option>
+                    <option value="">Filtrar por estados</option>
                     <option value="0">Perdido</option>
                     <option value="1">Encontrado</option>
                 </select>
