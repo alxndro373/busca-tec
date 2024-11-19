@@ -26,9 +26,8 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
    
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white p-6 w-11/12 md:w-1/2 lg:w-1/3 rounded-lg shadow-lg flex flex-col items-center">
-            <div className="flex w-full">
-                <div className="flex-1">
+            <div className="bg-white p-6 w-11/12 md:w-1/2 lg:w-1/3 rounded-lg shadow-lg flex flex-col md:flex-row items-center">
+                <div className="flex-1 mb-4 md:mb-0">
                     <button onClick={onClose} className="text-red-500 font-bold mb-4">Cerrar</button>
                     <h4 className="font-bold text-2xl mb-2">{selectedObject.name_object}</h4>
                     <p><strong>Estado:</strong> {selectedObject.state ? "Encontrado" : "Perdido"}</p>
@@ -46,7 +45,8 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
                         </button>
                     )}
                 </div>
-                <div className="w-2/5 ml-4">
+                
+                <div className="w-full md:w-2/5 flex justify-center">
                     <img
                         src={selectedObject.image_url as string}
                         alt="imagen del objeto perdido"
@@ -55,7 +55,6 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
                 </div>
             </div>
         </div>
-    </div>
     )
 }
 

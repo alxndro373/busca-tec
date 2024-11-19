@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react"
 import { getUserWithEmail } from "@/actions/userAction"
 import Loader from "@/components/loader"
 
+
 export default function MyObjects() {
 
   const [loading, setLoading] = useState<boolean>(true)
@@ -41,7 +42,6 @@ export default function MyObjects() {
             <ObjectsList objects={objectsByUser} buttonText="Encontre mi objeto" option={false}/>
             : <p className="text-center">No tienes objetos publicados</p>
       }
-
 
     </main>
   )
