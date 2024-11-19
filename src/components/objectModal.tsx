@@ -13,9 +13,9 @@ interface ObjectModalProps {
 const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText, option}) => {
 
     const handleWhatsAppRedirect = (phone: string) => {
-        const message = "¡Hola! Encontre el objeto que publicaste.";
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, "_blank"); 
+        const message = "¡Hola! Encontre el objeto que publicaste."
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+        window.open(url, "_blank")
     }
     const {changeObjectState} = objectStore()
     const handleAction = () => {
@@ -26,7 +26,7 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
    
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white p-6 w-1/3 rounded-lg shadow-lg flex flex-col items-center">
+        <div className="bg-white p-6 w-11/12 md:w-1/2 lg:w-1/3 rounded-lg shadow-lg flex flex-col items-center">
             <div className="flex w-full">
                 <div className="flex-1">
                     <button onClick={onClose} className="text-red-500 font-bold mb-4">Cerrar</button>
@@ -50,7 +50,7 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
                     <img
                         src={selectedObject.image_url as string}
                         alt="imagen del objeto perdido"
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-auto object-cover rounded-lg"
                     />
                 </div>
             </div>

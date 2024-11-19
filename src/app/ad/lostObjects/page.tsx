@@ -80,90 +80,112 @@ export default function LostObjects() {
     return (
         <>
             <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center mb-6">Añadir objeto perdido</h1>
-            <main className="flex flex-col items-center gap-4">
-                <h2 className="text-white bg-blue-950 w-4/5 py-2 text-2xl">Información general</h2>
-                <form onSubmit={handleSubmit(onSubmit)} className="w-4/5">
-                    <div>
-                        <p className="mb-2 font-bold">¿Que es?</p>
-                        <input 
-                        className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" 
+            <main className="flex flex-col items-center gap-6 p-4 sm:p-6 md:p-8">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center py-6 w-full max-w-3xl bg-blue-950 text-white mb-6 rounded">
+                    Añadir Objeto Perdido
+                </h1>
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-3xl bg-white p-6 sm:p-8 shadow-md rounded-lg">
+                    <div className="mb-4">
+                    <label className="block mb-2 font-bold">¿Qué es?</label>
+                    <input 
                         type="text" 
-                        placeholder="Escribe que tipo de objeto es." 
-                        {...register("name_object", {required:true})}
-                        />
+                        placeholder="Escribe qué tipo de objeto es." 
+                        className="w-full p-2 border-2 border-gray-300 rounded shadow-sm focus:outline-none focus:border-blue-500" 
+                        {...register("name_object", {required: true})}
+                    />
                     </div>
-                    <div>
-                        <p className="mb-2 font-bold">Descripcion General</p>
-                        <input type="text" 
-                            className="border-2 border-gray-500 shadow-md w-6/12 h-28 mb-2"
-                            placeholder="Escribe una breve descripción del objeto. como color,nombre,modelo etc."
-                            {...register("description")}
-                        />
+
+                    <div className="mb-4">
+                    <label className="block mb-2 font-bold">Descripción General</label>
+                    <textarea 
+                        placeholder="Escribe una breve descripción del objeto, como color, nombre, modelo, etc." 
+                        className="w-full p-2 border-2 border-gray-300 rounded shadow-sm h-28 resize-none focus:outline-none focus:border-blue-500" 
+                        {...register("description")}
+                    />
                     </div>
-                    <div>
-                        <p className="mb-2 font-bold">Lo he dejado en</p>
-                        <input 
-                        className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-2" 
+
+                    <div className="mb-4">
+                    <label className="block mb-2 font-bold">Lo he dejado en</label>
+                    <input 
                         type="text" 
-                        placeholder="Escribe una breve descripción del lugar donde recuerdes haberlo perdido." 
-                        {...register("localization", {required:true})}
+                        placeholder="Describe el lugar donde lo perdiste." 
+                        className="w-full p-2 border-2 border-gray-300 rounded shadow-sm focus:outline-none focus:border-blue-500" 
+                        {...register("localization", {required: true})}
+                    />
+                    </div>
+
+                    <div className="mb-4">
+                    <label className="block mb-2 font-bold">Categorías</label>
+                    <select 
+                        className="w-full p-2 border-2 border-gray-300 rounded shadow-sm bg-white focus:outline-none focus:border-blue-500" 
+                        {...register("category")}
+                    >
+                        <option value="Accesorios Personales">Accesorios Personales</option>
+                        <option value="Documentos y Tarjetas">Documentos y Tarjetas</option>
+                        <option value="Electronica">Electrónica</option>
+                        <option value="Ropa y Calzado">Ropa y Calzado</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    </div>
+
+                    <div className="mb-8">
+                    <label className="block mb-2 font-bold">Fecha</label>
+                    <div className="w-full p-2 border-2 border-gray-300 rounded shadow-sm focus-within:border-blue-500">
+                        <DatePicker 
+                        selected={startDate} 
+                        onChange={(date) => setStartDate(date)} 
+                        className="w-full focus:outline-none"
                         />
                     </div>
-                    <div>
-                        <p className="mb-2 font-bold">Categorias</p>
-                        <select className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white" {...register("category")} >
-                            <option value="Accesorios Personales">Accesorios Personales</option>
-                            <option value="Documentos y Tarjetas">Documentos y Tarjetas</option>
-                            <option value="Electronica">Electrónica</option>
-                            <option value="Ropa y Calzado">Ropa o calzado</option>
-                            <option value="otro">Otro</option>
-                        </select>
                     </div>
-                    <div className="mb-12">
-                        <p className="mb-2 font-bold">Fecha</p>
-                        <div className="p-1 border-2 border-gray-500 shadow-md w-6/12">
-                            <DatePicker   selected={startDate} onChange={(date) => setStartDate(date)} />   
-                        </div>
+
+                    <div className="mb-8">
+                    <h2 className="text-xl sm:text-2xl mb-4 font-bold">Imagen</h2>
+                    <div className="flex flex-col items-center gap-4 p-4 border-2 border-gray-300 rounded bg-gray-50">
+                        <button 
+                        type="button" 
+                        onClick={() => fileInputRef.current?.click()} 
+                        className="bg-blue-950 text-white px-6 py-2 rounded hover:bg-blue-800"
+                        >
+                        Subir Foto
+                        </button>
+                        {image && <span className="text-gray-700">{image}</span>}
+                        {errors.file && <span className="text-red-500">{errors.file.message}</span>}
+                        <input 
+                        type="file" 
+                        onChange={onChange} 
+                        ref={fileInputRef} 
+                        className="hidden"
+                        />
+                        <p className="text-sm text-gray-500">☢️ El tamaño máximo permitido del archivo es de 5MB</p>
+                        <p className="text-sm text-gray-500">☢️ Máximo 1 archivo permitido</p>
                     </div>
-                    <h2 className="text-white bg-blue-950 w-full py-2 text-2xl mb-10">Imagen</h2>
-                    <section className="w-4/5 ml-auto mr-auto">
-                        <div className="bg-gray-100 flex flex-col gap-6 items-center mb-10">
-                            
-                            <button onClick={() => fileInputRef.current?.click()} type="button" className="bg-blue-950 p-2 text-white rounded-md mt-10">
-                                Subir Foto
-                            </button>
-                            {image && <span>{image}</span>}
-                            {errors.file && <span className="text-red-500">{errors.file.message}</span>}
-                            <input onChange={onChange} ref={fileInputRef} className="hidden" type="file" />
-                            <p>☢️El tamaño maximo permitido del archivo es de 5.00MB ☢️</p>
-                            <p className="mb-10">☢️Maximo 1 archivo permitidos</p>
-                        </div>
-                        <div className="mb-10">
-                            <div className=" text-center mb-2">
-                                <input type="checkbox" className="align-middle" required={true} />
-                                <label className="ml-2 text-sm">
-                                    Acepto la <strong>
-                                        <a href="/terms/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-                                            Política de privacidad
-                                        </a>
-                                    </strong>
-                                </label>
-                            </div>
-                            <div className="text-center mb-4">
-                                <input type="checkbox" className="align-middle" required={true} />
-                                <label className="ml-2 text-sm">
-                                    Acepto los <strong>
-                                        <a href="/terms/termsConditions" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-                                            Términos y condiciones
-                                        </a>
-                                    </strong>
-                                </label>
-                            </div>
-                            <div className="text-center">
-                            <button className="bg-blue-950 py-2 w-[266px] text-white ">{loader ? "Subiendo..." : "Guardar"}</button>
-                            </div>
-                        </div>
-                    </section>
+                    </div>
+
+                    <div className="mb-4">
+                    <div className="flex items-center mb-2">
+                        <input type="checkbox" className="mr-2" required />
+                        <label className="text-sm">
+                        Acepto la <a href="/terms/privacy" className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">Política de privacidad</a>
+                        </label>
+                    </div>
+                    <div className="flex items-center mb-4">
+                        <input type="checkbox" className="mr-2" required />
+                        <label className="text-sm">
+                        Acepto los <a href="/terms/termsConditions" className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">Términos y condiciones</a>
+                        </label>
+                    </div>
+                    </div>
+
+                    <div className="text-center">
+                    <button 
+                        type="submit" 
+                        className={`w-full sm:w-auto px-8 py-2 bg-blue-950 text-white rounded ${loader ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-800'}`} 
+                        disabled={loader}
+                    >
+                        {loader ? "Subiendo..." : "Guardar"}
+                    </button>
+                    </div>
                 </form>
             </main>
         </>

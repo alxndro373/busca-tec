@@ -37,7 +37,7 @@ export default function Objects() {
         const matchesCategory = selectedCategory ? object.category === selectedCategory : true
         const matchesState = selectedState ? object.state === (selectedState === "1") : !object.state
         const matchesDate = selectedDate ? object.date && object.date.substring(0, 10) === selectedDate : true
-        return matchSearchText && matchesCategory && matchesState && matchesDate;
+        return matchSearchText && matchesCategory && matchesState && matchesDate
     })
 
     // Ordenar objetos según el orden seleccionado
@@ -47,7 +47,7 @@ export default function Objects() {
         } else if (sortOrder === "desc") {
             return filteredData.sort((a, b) => b.name_object.localeCompare(a.name_object))
         }
-        return filteredData;
+        return filteredData
     }
 
     return (
@@ -58,19 +58,19 @@ export default function Objects() {
             </p>
             <h3 className="text-center font-bold text-2xl mb-2">Todos los objetos</h3>
 
-            <div className="flex justify-between border-2 border-gray-200 mb-8 p-4 w-11/12 ml-auto mr-auto">
+            <div className="flex flex-col md:flex-row justify-between border-2 border-gray-200 mb-8 p-4 w-11/12 mx-auto">
                 <input
                     type="text"
                     placeholder="Buscar por nombre..."
                     value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)} //Actualiza el estado de búsqueda
-                    className="p-2 border-2 border-gray-500 w-full md:w-4/12 mb-4 mr-2 md:mb-0 shadow-md"
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="p-2 border-2 border-gray-500 w-full md:w-4/12 mb-4 md:mb-0 shadow-md"
                 />
 
                 <select
-                    className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white"
+                    className="p-1 border-2 border-gray-500 w-full md:w-2/12 mb-2 md:mb-0 shadow-md bg-white"
                     value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)} //Actualiza el estado del orden
+                    onChange={(e) => setSortOrder(e.target.value)}
                 >
                     <option value="">Ordenar por</option>
                     <option value="asc">Nombre Ascendente</option>
@@ -78,9 +78,9 @@ export default function Objects() {
                 </select>
 
                 <select
-                    className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white"
+                    className="p-1 border-2 border-gray-500 w-full md:w-2/12 mb-2 md:mb-0 shadow-md bg-white"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)} //Actualiza el estado de la categoría seleccionada
+                    onChange={(e) => setSelectedCategory(e.target.value)}
                 >
                     <option value="">Todas las categorías</option>
                     <option value="Accesorios Personales">Accesorios Personales</option>
@@ -91,26 +91,27 @@ export default function Objects() {
                 </select>
 
                 <select
-                    className="p-1 border-2 border-gray-500 w-6/12 shadow-md mb-1 bg-white"
+                    className="p-1 border-2 border-gray-500 w-full md:w-2/12 mb-2 md:mb-0 shadow-md bg-white"
                     value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)} //Actualiza el estado del estado seleccionado
+                    onChange={(e) => setSelectedState(e.target.value)}
                 >
                     <option value="">Filtrar por estados</option>
                     <option value="0">Perdido</option>
                     <option value="1">Encontrado</option>
                 </select>
 
-                <div className="w-6/12 ml-5">
-                    <label htmlFor="filter-date" className="">Filtrar por fecha:</label>
+                <div className="w-full md:w-2/12 mt-4 md:mt-0">
+                    <label htmlFor="filter-date" className="block md:inline-block">Fecha:</label>
                     <input
-                        type="date"
-                        id="filter-date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)} //Actualiza el estado de la fecha seleccionada
-                        className="border-2 border-gray-500 p-1 rounded ml-2"
+                    type="date"
+                    id="filter-date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="border-2 border-gray-500 p-1 rounded ml-0 md:ml-2 w-full"
                     />
                 </div>
-            </div>
+                </div>
+
 
             {
               loading ? <Loader /> :    
@@ -118,6 +119,6 @@ export default function Objects() {
               : <p className="text-center">No hay objetos perdidos</p>
             }
         </main>
-    );
+    )
     
 }

@@ -3,37 +3,34 @@ import Link from "next/link"
 import Image from "next/image";
 import image2 from "@/assets/image 2.png"
 
-
-
 export default async function UserHeader(){
 
     const session = await auth()
 
-
     return (
         <header className="pt-4">
-            <nav className="flex justify-between mr-4">
-                <Link href={'/'} className="">
+            <nav className="flex justify-between items-center px-4 sm:px-8 lg:px-16">
+                <Link href={'/'} className="flex items-center">
                     <Image
                         src={image2}
                         alt="logo"
                         width={70}
+                        height={70}
                         className="rounded-3xl px-2 mb-1"
-                        
                     />  
                 </Link>
-                <ul className="flex justify-end gap-4 items-center">
+                <ul className="flex gap-4 items-center text-sm sm:text-base">
                     <li>
                         <Link href={"/"} className="hover:text-blue-400">Inicio</Link>
                     </li>
                     <li>
                         <Link href={'/objects'} className="hover:text-blue-400">Objetos</Link>
                     </li>
-                
                     {
                         session ? <>
+
                             <li>
-                                <Link href={'my-objects'} className="hover:text-blue-400">Mis objetos</Link>
+                                <Link href={'/my-objects'} className="hover:text-blue-400">Mis objetos</Link>
                             </li>
                             <li>
                                 <span>Bienvenido: {session.user?.name}</span>
@@ -50,12 +47,8 @@ export default async function UserHeader(){
                         </>
                         : <Link href={'/login'} className="hover:text-blue-100">Iniciar Sesión</Link>
                     }
-
-                    
                 </ul>
             </nav>
-            
-
         </header>
     )
 }
