@@ -10,10 +10,10 @@ import Loader from "@/components/loader"
 
 export default function MyObjects() {
 
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<string>("")
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false)
+      setLoading("")
     }, 1000)
     return () => clearTimeout(timer)
   }, [])
@@ -26,7 +26,7 @@ export default function MyObjects() {
       recuperateObjectsByUser(user[0]?.id_user)
     }
     getUserWithObjects()
-  }, [])
+  },  [])
 
   const {objectsByUser} = objectStore()
 
@@ -39,7 +39,7 @@ export default function MyObjects() {
         loading ? <Loader></Loader>
           : objectsByUser.length > 0 ?
 
-            <ObjectsList objects={objectsByUser} buttonText="Encontre mi objeto" option={false}/>
+            <ObjectsList objects={objectsByUser} buttonText="Encontre mi objeto" option={"usuario"}/>
             : <p className="text-center">No tienes objetos publicados</p>
       }
 

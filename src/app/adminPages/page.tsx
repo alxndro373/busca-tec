@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Loader from "@/components/loader"
 import ObjectsList from "@/components/objects"
@@ -7,23 +7,27 @@ import { useState, useEffect } from "react"
 
 export default function Objects() {
     const { recuperateObjects } = objectStore()
-    const [loading, setLoading] = useState<string>("")
+    const [loading, setLoading] = useState<string>()   //cambiar para mostrar perdido
     const [selectedCategory, setSelectedCategory] = useState("")
     const [sortOrder, setSortOrder] = useState("")
-    const [selectedState, setSelectedState] = useState("perdido")
+    const [selectedState, setSelectedState] = useState("")
     const [selectedDate, setSelectedDate] = useState("")
     const [searchText, setSearchText] = useState("")
+    
 
     useEffect(() => {
         const timer = setTimeout(() => {
           setLoading("")
-        }, 1000)
+        },1000)
         return () => clearTimeout(timer)
-    },[])
-
+      },[]);
+    
+      
     useEffect(() => {
+
         recuperateObjects()
-    },[])
+        
+    },[]);
 
     const data = objectStore(state => state.objects)
 
@@ -46,11 +50,11 @@ export default function Objects() {
 
     return (
         <main>
-            <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center">Objetos</h1>
+            <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center">Panel de control</h1>
             <p className="bg-[#E2E2E2] font-bold text-center py-12 text-xl mb-8">
-                Aquí encontrarás una amplia variedad de objetos perdidos y encontrados.
+                Bienvenido administrador, aquí podras aceptar publicaciones de objetos.
             </p>
-            <h3 className="text-center font-bold text-2xl mb-2">Objetos {selectedState === 'perdido' ? 'perdidos' : 'encontrados'}</h3>
+            <h3 className="text-center font-bold text-2xl mb-2">Todos los objetos</h3>
 
             <div className="flex flex-col md:flex-row justify-between border-2 border-gray-200 mb-8 p-4 w-11/12 mx-auto">
                 <input
@@ -89,6 +93,7 @@ export default function Objects() {
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
                 >
+                    <option value="">Filtrar por estados</option>
                     <option value="perdido">Perdido</option>
                     <option value="encontrado">Encontrado</option>
                 </select>
@@ -96,22 +101,22 @@ export default function Objects() {
                 <div className="w-full md:w-2/12 mt-4 md:mt-0">
                     <label htmlFor="filter-date" className="block md:inline-block">Fecha:</label>
                     <input
-                        type="date"
-                        id="filter-date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        className="border-2 border-gray-500 p-1 rounded ml-0 md:ml-2 w-full"
+                    type="date"
+                    id="filter-date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="border-2 border-gray-500 p-1 rounded ml-0 md:ml-2 w-full"
                     />
                 </div>
-            </div>
+                </div>
 
-            {loading ? (
-                <Loader />
-            ) : sortedData().length > 0 ? (
-                <ObjectsList objects={sortedData()} buttonText="Encontre tu objeto. Ir a WhatsApp" option={"usuario"}/>
-            ) : (
-                <p className="text-center">No hay objetos {selectedState === 'perdido' ? 'perdidos' : 'encontrados'}</p>
-            )}
+
+            {
+              loading ? <Loader /> :    
+              sortedData().length > 0 ? <ObjectsList objects={sortedData()} buttonText="Encontre tu objeto. Ir a WhatsApp" option={"admin"} />
+              : <p className="text-center">No hay objetos perdidos</p>
+            }
         </main>
     )
+    
 }

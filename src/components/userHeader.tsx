@@ -3,8 +3,7 @@ import Link from "next/link"
 import Image from "next/image";
 import image2 from "@/assets/image 2.png"
 
-export default async function UserHeader(){
-
+export default async function UserHeader() {
     const session = await auth()
 
     return (
@@ -27,25 +26,42 @@ export default async function UserHeader(){
                         <Link href={'/objects'} className="hover:text-blue-400">Objetos</Link>
                     </li>
                     {
-                        session ? <>
+                        session ? (
+                            <>
+                                {session.user?.rol !== 'admin' && (
+                                    <>
+                                        <li>
+                                            <Link href={'/my-objects'} className="hover:text-blue-400">Mis objetos</Link>
+                                        </li>
+                                        <li>
+                                            <span>Bienvenido: {session.user?.name}</span>
+                                        </li>
+                                        <li>
+                                            <button className="bg-blue-950 text-white py-2 px-4 rounded-md mb-1 mr-1 hover:text-blue-100">
+                                                <Link href={"/ad/lostObjects"}>Añadir anuncio</Link>
+                                            </button>
+                                        </li>
+                                    </>
+                                )}
 
-                            <li>
-                                <Link href={'/my-objects'} className="hover:text-blue-400">Mis objetos</Link>
-                            </li>
-                            <li>
-                                <span>Bienvenido: {session.user?.name}</span>
-                            </li>
-                            <form action={async () => {
-                                "use server"
-                                await signOut()
-                            }}>
-                                <button className="bg-blue-950 text-white py-2 px-4 rounded-md mb-1 mr-1 hover:text-blue-100">
-                                    <Link href={"/ad/lostObjects"}>Añadir anuncio</Link>
-                                </button>
-                                <button type="submit" className="bg-red-500 text-white py-2 px-4 rounded-md mb-1 hover:text-red-100">Cerrar Sesion</button>
-                            </form>
-                        </>
-                        : <Link href={'/login'} className="hover:text-blue-100">Iniciar Sesión</Link>
+                                {session.user?.rol === 'admin' && (
+                                    <li>
+                                        <Link href={"/adminPages"} className="hover:text-blue-400">Panel de control</Link>
+                                    </li>
+                                )}
+
+                                <form action={async () => {
+                                    "use server"
+                                    await signOut()
+                                }}>
+                                    <button type="submit" className="bg-red-500 text-white py-2 px-4 rounded-md mb-1 hover:text-red-100">
+                                        Cerrar Sesión
+                                    </button>
+                                </form>
+                            </>
+                        ) : (
+                            <Link href={'/login'} className="hover:text-blue-100">Iniciar Sesión</Link>
+                        )
                     }
                 </ul>
             </nav>

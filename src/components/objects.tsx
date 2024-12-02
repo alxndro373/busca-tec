@@ -7,7 +7,7 @@ import ObjectModal from "./objectModal"
 
 interface Props {
     objects: objectType[]
-    option: boolean
+    option: string
     buttonText: string
 }
 
@@ -37,7 +37,7 @@ const ObjectsList: FC<Props> = ({objects, option ,buttonText}) => {
                 />
                 <div>
                     <h4 className="font-bold">{object.name_object}</h4>
-                    <span className={`px-2 text-white ${object.state ? 'bg-green-500' : 'bg-red-500'}`}>{object.state ? "Encontrado" : "Perdido"}</span>
+                    <span className={`px-2 text-white ${object.state === 'encontrado' ? 'bg-green-500' : object.state === 'perdido' ? 'bg-red-500' : 'bg-gray-500' }`} > {object.state === 'encontrado' ? "Encontrado" : object.state === 'perdido' ? "Perdido" : "pendiente"}</span>
                     <p>⌚ {object.date}</p>
                     <hr />
                     <p>💼 {object.category}</p>

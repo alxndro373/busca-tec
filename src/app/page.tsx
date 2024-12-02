@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import image1 from "@/assets/image 1.jpg";
-import image3 from '@/assets/image 3.jpg';
+import Image from "next/image"
+import Link from "next/link"
+import image1 from "@/assets/image 1.jpg"
+import image3 from '@/assets/image 3.jpg'
 
 export default function Home() {
   return (
