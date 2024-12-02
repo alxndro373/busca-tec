@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import Loader from "@/components/loader"
 import ObjectsList from "@/components/objects"
@@ -7,10 +7,10 @@ import { useState, useEffect } from "react"
 
 export default function Objects() {
     const { recuperateObjects } = objectStore()
-    const [loading, setLoading] = useState<string>()   //cambiar para mostrar perdido
+    const [loading, setLoading] = useState<string>()
     const [selectedCategory, setSelectedCategory] = useState("")
     const [sortOrder, setSortOrder] = useState("")
-    const [selectedState, setSelectedState] = useState("")
+    const [selectedState, setSelectedState] = useState("pendiente")
     const [selectedDate, setSelectedDate] = useState("")
     const [searchText, setSearchText] = useState("")
     
@@ -93,7 +93,7 @@ export default function Objects() {
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
                 >
-                    <option value="">Filtrar por estados</option>
+                    <option value="pendiente">Pendiente</option>
                     <option value="perdido">Perdido</option>
                     <option value="encontrado">Encontrado</option>
                 </select>
