@@ -1,4 +1,4 @@
-import { boolean, date, pgTable,text, varchar} from "drizzle-orm/pg-core";
+import {date, pgTable,text, varchar} from "drizzle-orm/pg-core";
 
 
 
@@ -13,23 +13,26 @@ export const usuarios = pgTable("usuarios",{
     phone: varchar("numero_telefono", {length: 10})
     .notNull(),
     password: varchar("password", {length: 60})
-    .notNull()
-
+    .notNull(),
+    rol: varchar("rol", { length: 20 })
+    .notNull().default("usuario")
 })
 
 
 export const objetos = pgTable("objetos", {
-    id_object: text("id_objeto")
-    .primaryKey()
-    .$default(() => crypto.randomUUID()),
+    id_object: text("id_objeto")  // Asegúrate de que el campo en el esquema de la base de datos sea 'id_objeto'
+      .primaryKey()
+      .$default(() => crypto.randomUUID()),
     name_object: text("nombre del objeto")
-    .notNull(),
+      .notNull(),
     description: text("descripcion"),
     localization: text("localizacion")
-    .notNull(),
+      .notNull(),
     date: date("fecha_encontrada"),
-    state: boolean("estado_objeto"),
+    state: text("estado_objeto")
+      .notNull().default("pendiente"),
     image_url: text("imagen"),
     category: text("categorias"),
     id_user: text("id_usuario").references(() => usuarios.id_user)
-})
+  })
+  

@@ -8,7 +8,8 @@ interface Props  {
     objectsByUser: objectType[]
     recuperateObjects: () => Promise<void>
     recuperateObjectsByUser: (id_user: string) => Promise<void>
-    changeObjectState: (id_object: string, state:boolean) => Promise<void>
+    changeObjectState: (id_object: string, state:string) => Promise<void>
+    // recuperateObjectsUsr: () => Promise<void>
 } 
 
 export const objectStore = create<Props>((set) => 
@@ -21,18 +22,26 @@ export const objectStore = create<Props>((set) =>
         set({objects})
     },
 
-
     recuperateObjectsByUser: async (id_user: string) => {
         const objects = await getObjectsByUser(id_user)
         set({objectsByUser: objects })
     },
 
+    // recuperateObjectsUsr: async () => {
+    //     const objects = await getObjects()
+    //     const filteredObjects = objects.filter((object) => object.state === "perdido")
+    //     set({ objects: filteredObjects })
+    // },
 
-    changeObjectState: async (id_object: string, stateObject: boolean) => {
+    changeObjectState: async (id_object: string, stateObject: string) => {
         await updateObjectState(id_object, stateObject)
         set(state => ({
-            objectsByUser: state.objectsByUser.map(object => object.id_object === id_object ? {...object, state:stateObject} : object),
-            objects: state.objects.map(object => object.id_object !== id_object ? object : {...object, state:stateObject})
+            objectsByUser: state.objectsByUser.map((object) =>
+                object.id_object === id_object ? { ...object, state: stateObject } : object
+            ),
+            objects: state.objects.map((object) =>
+                object.id_object === id_object ? { ...object, state: stateObject } : object
+            ),
         }))
         
     }

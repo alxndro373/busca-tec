@@ -36,7 +36,7 @@ export const objectSchema = z.object({
     return file.size < 5 * 1024 * 1024 
   }, {message: "la imagen debe ser menos de 5MB"})
   .refine((file) => {
-    return file.type === 'image/jpeg' || file.type === 'image/png' || file.type === "image/jpg"; // Tipos permitidos
+    return file.type === 'image/jpeg' || file.type === 'image/png' || file.type === "image/jpg" // Tipos permitidos
   }, {
     message: 'Solo se permiten archivos JPEG y PNG y JPG.',
   }),

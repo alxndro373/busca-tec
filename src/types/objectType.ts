@@ -6,7 +6,7 @@ export type objectType = {
     description: string | null,
     localization: string,
     date: string | null,
-    state: boolean | null,
+    state: string | null,
     category: string | null,
     image_url: string | null | undefined,
     id_user: string | null,

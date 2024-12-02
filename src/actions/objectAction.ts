@@ -14,11 +14,11 @@ export const getObjects = async () => {
         category: objetos.category,
         image_url: objetos.image_url,
         id_user: objetos.id_user,
-        phone: usuarios.phone, // Selecciona el número de teléfono del usuario
+        phone: usuarios.phone,
         state: objetos.state
     })
     .from(objetos)
-    .innerJoin(usuarios, eq(objetos.id_user, usuarios.id_user));
+    .innerJoin(usuarios, eq(objetos.id_user, usuarios.id_user))
     return objects
 } 
 
@@ -41,7 +41,10 @@ export const getObjectsByUser = async (id_user: string) => {
   return objects
 }
 
-export const updateObjectState = async (id_object: string, state: boolean) => {
+export const updateObjectState = async (id_object: string, state: string) => {
     await db.update(objetos).set({state}).where(eq(objetos.id_object,id_object))
 }
 
+export const deleteObject = async (id_object: string) => {
+    await db.delete(objetos).where(eq(objetos.id_object, id_object))
+}
