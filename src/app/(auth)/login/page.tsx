@@ -54,6 +54,7 @@ export default function Login() {
                     )}
                     <input
                         type="password"
+                        typeof="text"
                         placeholder="Contraseña"
                         className="w-96 py-2"
                         {...form.register("password")}
@@ -66,7 +67,7 @@ export default function Login() {
                     <button
                         className="bg-[#D0D9EC] p-2 w-64"
                         type="submit"
-                        disabled={loading} // Deshabilitamos el botón mientras cargamos
+                        disabled={loading}
                     >
                         {loading ? "Cargando..." : "Iniciar Sesión"}
                     </button>
