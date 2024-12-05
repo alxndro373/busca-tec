@@ -7,23 +7,26 @@ import { useState, useEffect } from "react"
 
 export default function Objects() {
     const { recuperateObjects } = objectStore()
-    const [loading, setLoading] = useState<string>("")
-    const [selectedCategory, setSelectedCategory] = useState("")
-    const [sortOrder, setSortOrder] = useState("")
-    const [selectedState, setSelectedState] = useState("perdido")
-    const [selectedDate, setSelectedDate] = useState("")
-    const [searchText, setSearchText] = useState("")
+    const [loading, setLoading] = useState<boolean>(true)
+    const [selectedCategory, setSelectedCategory] = useState<string>("")
+    const [sortOrder, setSortOrder] = useState<string>("")
+    const [selectedState, setSelectedState] = useState<string>("")
+    const [selectedDate, setSelectedDate] = useState<string>("")
+    const [searchText, setSearchText] = useState<string>("")
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-          setLoading("")
-        }, 1000)
-        return () => clearTimeout(timer)
-    },[])
+        const fetchData = async () => {
+            try {
+                await recuperateObjects()
+            } catch (error) {
+                console.error("Error al cargar los objetos:", error)
+            } finally {
+                setLoading(false)
+            }
+        };
 
-    useEffect(() => {
-        recuperateObjects()
-    },[])
+        fetchData()
+    }, [recuperateObjects])
 
     const data = objectStore(state => state.objects)
 
@@ -35,6 +38,7 @@ export default function Objects() {
         return matchSearchText && matchesCategory && matchesState && matchesDate
     })
 
+    // Ordenamos los datos si es necesario
     const sortedData = () => {
         if (sortOrder === "asc") {
             return filteredData.sort((a, b) => a.name_object.localeCompare(b.name_object))
@@ -108,10 +112,10 @@ export default function Objects() {
             {loading ? (
                 <Loader />
             ) : sortedData().length > 0 ? (
-                <ObjectsList objects={sortedData()} buttonText="Encontre tu objeto. Ir a WhatsApp" option={"usuario"}/>
+                <ObjectsList objects={sortedData()} buttonText="Contactar vía WhatsApp" option={"usuario"} />
             ) : (
                 <p className="text-center">No hay objetos {selectedState === 'perdido' ? 'perdidos' : 'encontrados'}</p>
             )}
         </main>
-    )
+    );
 }
