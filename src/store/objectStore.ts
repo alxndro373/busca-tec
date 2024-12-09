@@ -12,7 +12,7 @@ interface Props {
   objectsForUser: objectType[]
 }
 
-export const objectStore = create<Props>((set, get) => ({
+export const objectStore = create<Props>((set) => ({
   objects: [],
   objectsByUser: [],
   objectsForAdmin: [],
