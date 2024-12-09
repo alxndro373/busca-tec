@@ -52,7 +52,7 @@ export default function AdminPage() {
       ) : filteredData.length > 0 ? (
         <ObjectsList
           objects={filteredData}
-          buttonText="Aceptar objeto"
+          buttonText=""
           option="admin"
         />
       ) : (
