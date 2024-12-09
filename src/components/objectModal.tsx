@@ -17,7 +17,6 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
     const { changeObjectState } = objectStore()
   
     const isOwner = session?.user?.id === selectedObject.id_user
-    const isAdmin = session?.user?.rol === "admin"
   
     const handleWhatsAppRedirect = (phone: string) => {
       const message = "¡Hola! Encontré el objeto que publicaste."
