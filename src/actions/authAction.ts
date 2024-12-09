@@ -2,7 +2,7 @@
 
 import { signIn } from "@/auth"
 import { db } from "@/db/drizzle"
-import { usuarios, objetos } from "@/db/schema"
+import { usuarios} from "@/db/schema"
 import { loginSchema, registerSchema } from "@/lib/zod"
 import { eq } from "drizzle-orm"
 import { AuthError } from "next-auth"
@@ -66,13 +66,3 @@ export const registerAction = async (values: z.infer<typeof registerSchema>) => 
       return { error: "Error 505" }
     }
   }
-
-// export async function deleteObject(objectId: string) {
-//   try {
-//       const deletedRows = await db.delete(objetos).where(eq(objetos.id_object, objectId))
-//       return deletedRows
-//   } catch (error) {
-//       console.error("Error al eliminar el objeto:", error)
-//       throw new Error("No se pudo eliminar el objeto.")
-//   }
-// }
