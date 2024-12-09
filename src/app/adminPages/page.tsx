@@ -51,10 +51,11 @@ export default function AdminPage() {
         <Loader />
       ) : filteredData.length > 0 ? (
         <ObjectsList
-          objects={filteredData}
-          buttonText=""
-          option="admin"
-        />
+            objects={filteredData}
+            buttonText=""
+            option="admin" onObjectChange={function (): void {
+              throw new Error("Function not implemented.")
+            } }        />
       ) : (
         <p className="text-center">No hay objetos pendientes</p>
       )}
