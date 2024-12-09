@@ -1,49 +1,54 @@
+// objectStore.ts
+
 import { getObjects, getObjectsByUser, updateObjectState } from "@/actions/objectAction"
-import { objectType  } from "@/types/objectType"
-import {create} from "zustand"
+import { objectType } from "@/types/objectType"
+import { create } from "zustand"
 
-
-interface Props  {
+interface Props {
     objects: objectType[]
     objectsByUser: objectType[]
     recuperateObjects: () => Promise<void>
     recuperateObjectsByUser: (id_user: string) => Promise<void>
-    changeObjectState: (id_object: string, state:string) => Promise<void>
-    // recuperateObjectsUsr: () => Promise<void>
-} 
+    changeObjectState: (id_object: string, stateObject: string, estado_objeto: boolean) => Promise<void>
+    getObjectsForAdmin: () => objectType[] // Para la página de administración (estado_objeto: false)
+    getObjectsForUser: () => objectType[] // Para la página de usuario (estado_objeto: true)
+}
 
-export const objectStore = create<Props>((set) => 
-({
+export const objectStore = create<Props>((set, get) => ({
     objects: [],
     objectsByUser: [],
 
     recuperateObjects: async () => {
         const objects = await getObjects()
-        set({objects})
+        set({ objects })
     },
 
     recuperateObjectsByUser: async (id_user: string) => {
         const objects = await getObjectsByUser(id_user)
-        set({objectsByUser: objects })
+        set({ objectsByUser: objects })
     },
 
-    // recuperateObjectsUsr: async () => {
-    //     const objects = await getObjects()
-    //     const filteredObjects = objects.filter((object) => object.state === "perdido")
-    //     set({ objects: filteredObjects })
-    // },
-
-    changeObjectState: async (id_object: string, stateObject: string) => {
-        await updateObjectState(id_object, stateObject)
-        set(state => ({
+    changeObjectState: async (id_object: string, stateObject: string, estado_objeto: boolean) => {
+        await updateObjectState(id_object, stateObject, estado_objeto)
+        set((state) => ({
             objectsByUser: state.objectsByUser.map((object) =>
-                object.id_object === id_object ? { ...object, state: stateObject } : object
+                object.id_object === id_object ? { ...object, state: stateObject, estado_objeto } : object
             ),
             objects: state.objects.map((object) =>
-                object.id_object === id_object ? { ...object, state: stateObject } : object
+                object.id_object === id_object ? { ...object, state: stateObject, estado_objeto } : object
             ),
         }))
-        
+    },
+
+    // Métodos para filtrar objetos por estado_objeto
+    getObjectsForAdmin: () => {
+        const state = get() // Obtener el estado actual
+        return state.objects.filter(object => object.estado_objeto === false) // Filtra objetos en estado_objeto: false
+    },
+
+    getObjectsForUser: () => {
+        const state = get() // Obtener el estado actual
+        return state.objects.filter(object => object.estado_objeto === true) // Filtra objetos en estado_objeto: true
     }
 
 }))

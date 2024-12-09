@@ -67,12 +67,12 @@ export const registerAction = async (values: z.infer<typeof registerSchema>) => 
     }
   }
 
-  export async function deleteObject(objectId: string) {
-    try {
-        const deletedRows = await db.delete(objetos).where(eq(objetos.id_object, objectId))
-        return deletedRows
-    } catch (error) {
-        console.error("Error al eliminar el objeto:", error)
-        throw new Error("No se pudo eliminar el objeto.")
-    }
-}
+// export async function deleteObject(objectId: string) {
+//   try {
+//       const deletedRows = await db.delete(objetos).where(eq(objetos.id_object, objectId))
+//       return deletedRows
+//   } catch (error) {
+//       console.error("Error al eliminar el objeto:", error)
+//       throw new Error("No se pudo eliminar el objeto.")
+//   }
+// }

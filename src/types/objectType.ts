@@ -1,5 +1,4 @@
 
-
 export type objectType = {
     id_object: string,
     name_object: string,
@@ -10,7 +9,8 @@ export type objectType = {
     category: string | null,
     image_url: string | null | undefined,
     id_user: string | null,
-    phone?: string
+    phone?: string,
+    estado_objeto: boolean
 }
 
 

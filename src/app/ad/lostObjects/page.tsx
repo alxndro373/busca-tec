@@ -19,13 +19,13 @@ export default function LostObjects() {
     const [image,setImage] = useState<string|undefined>(undefined)
     const [loader,setLoader] = useState<boolean>(false)
 
-   const {data: session} = useSession()
+    const {data: session} = useSession()
 
-   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] 
-    if(file) setValue("file", file , {shouldValidate: true})
-    setImage(file?.name)
-   }
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] 
+        if(file) setValue("file", file , {shouldValidate: true})
+        setImage(file?.name)
+    }
 
     const {register, handleSubmit, setValue, formState: {errors}} = useForm<z.infer<typeof objectSchema>>({
         resolver: zodResolver(objectSchema),
@@ -33,22 +33,23 @@ export default function LostObjects() {
             name_object: "",
             description:"" ,
             localization:"",
-            category: "", 
+            category: "",
+            state: "perdido", // Se maneja solo "perdido" y "encontrado"
+            estado_objeto: false, // Establecemos "false" para backend
         },
     })
-    const onSubmit : SubmitHandler<z.infer<typeof objectSchema>> = async ({name_object,description,localization,category,file}) => {
+
+    const onSubmit: SubmitHandler<z.infer<typeof objectSchema>> = async ({name_object, description, localization, category, state, file}) => {
         setLoader(true)
         try {
             const user = await getUserWithEmail(session?.user?.email as string)
-            console.log(user)
-            console.log(user[0])
-            if(!user || user.length === 0){
+            if(!user || user.length === 0) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
                     text: "Ha ocurrido un error al intentar cargar tus datos. Intenta refrescar la página o iniciar sesión de nuevo.",
-                  });
-                return 
+                })
+                return
             }
             const id = user[0].id_user
             const formData = new FormData()
@@ -58,23 +59,27 @@ export default function LostObjects() {
                 body: formData
             })
             const data = await response.json()
-            await addObject(name_object,description,localization,startDate,category,data.image.secure_url,id)
+    
+            // Agregar el objeto con el estado actualizado
+            await addObject(name_object, description, localization, startDate, category, data.image.secure_url, id, state, false)
+            
             Swal.fire({
                 title: `${name_object}`,
                 text: "Publicado Exitosamente",
                 icon: "success"
-              })
+            })
         } catch (error) {
-            console.log(error)
+            console.error(error)
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "No se pudo subir el objeto perdido. Intentalo más tarde.",
-              })
-        }finally{
+            })
+        } finally {
             setLoader(false)
         }
     }
+    
 
 
     return (
@@ -85,6 +90,17 @@ export default function LostObjects() {
                     Añadir Objeto Perdido
                 </h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-3xl bg-white p-6 sm:p-8 shadow-md rounded-lg">
+                    <div className="mb-4">
+                        <label className="block mb-2 font-bold">Estado del Objeto</label>
+                        <select
+                            className="w-full p-2 border-2 border-gray-300 rounded shadow-sm bg-white focus:outline-none focus:border-blue-500"
+                            {...register("state")} // Usar 'state' para el frontend
+                        >
+                            <option value="perdido">Perdido</option>
+                            <option value="encontrado">Encontrado</option>
+                        </select>
+                    </div>
+
                     <div className="mb-4">
                     <label className="block mb-2 font-bold">¿Qué es?</label>
                     <input 

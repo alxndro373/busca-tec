@@ -43,6 +43,7 @@ export const objectSchema = z.object({
   name_object: string().min(4,"El nombre del objeto es requerido"),
   description: string(),
   localization: string().min(1,"La localización es requerida"),
-  category: string()
-  
+  category: string(),
+  state: string(),
+  estado_objeto: z.boolean()
 })
