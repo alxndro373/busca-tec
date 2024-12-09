@@ -1,4 +1,4 @@
-import {date, pgTable,text, varchar} from "drizzle-orm/pg-core";
+import {boolean, date, pgTable,text, varchar} from "drizzle-orm/pg-core";
 
 
 
@@ -30,9 +30,11 @@ export const objetos = pgTable("objetos", {
       .notNull(),
     date: date("fecha_encontrada"),
     state: text("estado_objeto")
-      .notNull().default("pendiente"),
+      .notNull()
+      .default("pendiente"),
     image_url: text("imagen"),
     category: text("categorias"),
-    id_user: text("id_usuario").references(() => usuarios.id_user)
+    id_user: text("id_usuario").references(() => usuarios.id_user),
+    estado_objeto: boolean("estado").notNull().default(false)
   })
   

@@ -7,44 +7,49 @@ import { useSession } from "next-auth/react"
 import { getUserWithEmail } from "@/actions/userAction"
 import Loader from "@/components/loader"
 
-
 export default function MyObjects() {
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<string>("")
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading("")
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
+
   const { recuperateObjectsByUser } = objectStore()
-  const { data: session, status } = useSession()
-  
+  const { data: session } = useSession()
+
   useEffect(() => {
     const getUserWithObjects = async () => {
-      if (!session?.user?.email) return
-
-      try {
-        const user = await getUserWithEmail(session?.user?.email)
-        if (user?.length > 0) {
+      if (session?.user?.email) {
+        const user = await getUserWithEmail(session.user.email)
+        if (user[0]?.id_user) {
           await recuperateObjectsByUser(user[0]?.id_user)
         }
-      } catch (error) {
-        console.error("Error cargando los objetos del usuario:", error)
-      } finally {
-        setLoading(false)
       }
     }
-
-    if (status === "authenticated") {
-      setLoading(true)
+    if (session?.user?.email) {
       getUserWithObjects()
     }
-  }, [session?.user?.email, status, recuperateObjectsByUser])
+  }, [session?.user?.email])
 
   const { objectsByUser } = objectStore()
 
   return (
     <main>
-      <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center mb-5">Mis objetos</h1>
+      <h1 className="bg-blue-950 text-white text-4xl font-bold py-14 text-center mb-5">
+        Mis objetos
+      </h1>
 
       {loading ? (
         <Loader />
       ) : objectsByUser.length > 0 ? (
-        <ObjectsList objects={objectsByUser} buttonText="Encontre mi objeto" option={"usuario"} />
+        <ObjectsList
+          objects={objectsByUser}
+          buttonText="Reclamado"
+          option="usuario"
+        />
       ) : (
         <p className="text-center">No tienes objetos publicados</p>
       )}
