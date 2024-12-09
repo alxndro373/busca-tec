@@ -47,20 +47,22 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
       try {
         const response = await fetch(`/api/db/${id_object}`, {
           method: "DELETE",
-        })
-  
+        });
+    
         if (!response.ok) {
-          throw new Error("Error al eliminar el objeto")
+          throw new Error("Error al eliminar el objeto");
         }
-  
-        onClose()
-        alert("Objeto eliminado exitosamente")
+
+        await objectStore.getState().deleteObject(id_object);
+
+        onClose();
+        alert("Objeto eliminado exitosamente");
       } catch (error) {
-        alert("Error al eliminar el objeto")
-        console.error(error)
+        alert("Error al eliminar el objeto");
+        console.error(error);
       }
     }
-  
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div className="bg-white p-6 w-11/12 md:w-1/2 lg:w-1/3 rounded-lg shadow-lg flex flex-col md:flex-row items-center">
@@ -90,8 +92,7 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
             <p>
               <strong>Lugar:</strong> {selectedObject.localization}
             </p>
-  
-            {/* Mostrar el botón "Contactar" para objetos perdidos o encontrados con teléfono */}
+
             {option === "usuario" && (selectedObject.state === "perdido" || selectedObject.state === "encontrado") && selectedObject.phone && (
               <button
                 onClick={handleAction}

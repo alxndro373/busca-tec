@@ -1,8 +1,9 @@
-import { getObjects, getObjectsByUser, updateObjectState } from "@/actions/objectAction"
+import { deleteObject, getObjects, getObjectsByUser, updateObjectState } from "@/actions/objectAction"
 import { objectType } from "@/types/objectType"
 import { create } from "zustand"
 
 interface Props {
+    deleteObject(id_object: string): unknown
     objects: objectType[]
     objectsByUser: objectType[]
     recuperateObjects: () => Promise<void>
@@ -68,7 +69,30 @@ interface Props {
         console.error("Error al cambiar el estado del objeto:", error)
       }
     },
-  
+
+    deleteObject: async (id_object: string) => {
+      try {
+
+        await deleteObject(id_object);
+
+        set((state) => {
+          const updatedObjects = state.objects.filter(object => object.id_object !== id_object);
+          const updatedObjectsByUser = state.objectsByUser.filter(object => object.id_object !== id_object);
+          const updatedObjectsForAdmin = state.objectsForAdmin.filter(object => object.id_object !== id_object);
+          const updatedObjectsForUser = state.objectsForUser.filter(object => object.id_object !== id_object);
+    
+          return {
+            objects: updatedObjects,
+            objectsByUser: updatedObjectsByUser,
+            objectsForAdmin: updatedObjectsForAdmin,
+            objectsForUser: updatedObjectsForUser,
+          };
+        });
+      } catch (error) {
+        console.error("Error al eliminar el objeto:", error);
+      }
+    },
+    
     getObjectsForAdmin: () => get().objects.filter(object => !object.estado_objeto),
     getObjectsForUser: () => get().objects.filter(object => object.estado_objeto),
   }))
