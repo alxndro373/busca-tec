@@ -1,16 +1,17 @@
 "use client"
 
-import { objectType } from "@/types/objectType"
 import { useState, FC } from "react"
+import { objectType } from "@/types/objectType"
 import ObjectModal from "./objectModal"
 
 interface Props {
   objects: objectType[]
   option: string
   buttonText: string
+  onObjectChange: () => void
 }
 
-const ObjectsList: FC<Props> = ({ objects, option, buttonText }) => {
+const ObjectsList: FC<Props> = ({ objects, option, buttonText, onObjectChange }) => {
   const [selectedObject, setSelectedObject] = useState<objectType | null>(null)
 
   const handleObjectClick = (object: objectType) => {
@@ -21,10 +22,24 @@ const ObjectsList: FC<Props> = ({ objects, option, buttonText }) => {
 
   const filteredObjects = objects.filter(object => {
     if (option === "usuario") {
-      return object.estado_objeto === true
+      return true
     }
     return true
   })
+
+  const handleDelete = async (id_object: string) => {
+    try {
+      const response = await fetch(`/api/db/${id_object}`, {
+        method: "DELETE",
+      })
+      if (!response.ok) {
+        throw new Error("Error al eliminar el objeto")
+      }
+      onObjectChange()
+    } catch (error) {
+      console.error("Error al eliminar el objeto:", error)
+    }
+  }
 
   return (
     <>
@@ -51,6 +66,7 @@ const ObjectsList: FC<Props> = ({ objects, option, buttonText }) => {
               <p>⌚ {object.date}</p>
               <hr />
               <p>💼 {object.category}</p>
+              <button onClick={() => handleDelete(object.id_object)}>Eliminar</button>
             </div>
           </div>
         ))}
