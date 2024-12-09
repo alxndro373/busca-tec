@@ -44,7 +44,7 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
     }).then(async (result) => {
       if (result.isConfirmed) {
         if (selectedObject.state === "perdido" || selectedObject.state === "encontrado") {
-          await changeObjectState(selectedObject.id_object, "reclamado", selectedObject.estado_objeto) // Mantener estado_objeto
+          await changeObjectState(selectedObject.id_object, "reclamado", selectedObject.estado_objeto)
           onClose()
           Swal.fire("Reclamado", "El objeto ha sido marcado como reclamado.", "success")
         } else {
