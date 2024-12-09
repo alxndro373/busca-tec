@@ -29,8 +29,15 @@ export default function MyObjects() {
       }
     }
 
-    if (session?.user?.email) {
-      fetchData()
+    // Verificar si ya se hizo la recarga antes
+    if (!localStorage.getItem("pageReloaded")) {
+      localStorage.setItem("pageReloaded", "true")  // Marcar que ya se hizo la recarga
+      window.location.reload()  // Recargar la página solo una vez
+    } else {
+      // Si ya se recargó, solo cargar los datos
+      if (session?.user?.email) {
+        fetchData()
+      }
     }
   }, [session?.user?.email, recuperateObjectsByUser])
 
