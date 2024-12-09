@@ -8,33 +8,31 @@ import { getUserWithEmail } from "@/actions/userAction"
 import Loader from "@/components/loader"
 
 export default function MyObjects() {
-  const [loading, setLoading] = useState<string>("")
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading("")
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [])
-
-  const { recuperateObjectsByUser } = objectStore()
+  const [loading, setLoading] = useState<boolean>(true)
+  const { recuperateObjectsByUser, objectsByUser } = objectStore()
   const { data: session } = useSession()
 
   useEffect(() => {
-    const getUserWithObjects = async () => {
-      if (session?.user?.email) {
-        const user = await getUserWithEmail(session.user.email)
-        if (user[0]?.id_user) {
-          await recuperateObjectsByUser(user[0]?.id_user)
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        if (session?.user?.email) {
+          const user = await getUserWithEmail(session.user.email)
+          if (user[0]?.id_user) {
+            await recuperateObjectsByUser(user[0]?.id_user)
+          }
         }
+      } catch (error) {
+        console.error("Error al recuperar los objetos:", error)
+      } finally {
+        setLoading(false)
       }
     }
-    if (session?.user?.email) {
-      getUserWithObjects()
-    }
-  }, [session?.user?.email])
 
-  const { objectsByUser } = objectStore()
+    if (session?.user?.email) {
+      fetchData()
+    }
+  }, [session?.user?.email, recuperateObjectsByUser])
 
   return (
     <main>
