@@ -106,7 +106,9 @@ export default function UserObjectsPage() {
       {loading ? (
         <Loader />
       ) : filteredAndSortedData.length > 0 ? (
-        <ObjectsList objects={filteredAndSortedData} buttonText="Contactar" option="usuario" />
+        <ObjectsList objects={filteredAndSortedData} buttonText="Contactar" option="usuario" onObjectChange={function (): void {
+            throw new Error("Function not implemented.")
+          } } />
       ) : (
         <p className="text-center">No hay objetos aceptados</p>
       )}
