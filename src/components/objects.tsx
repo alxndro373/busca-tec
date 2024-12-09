@@ -13,20 +13,17 @@ interface Props {
 const ObjectsList: FC<Props> = ({ objects, option, buttonText }) => {
   const [selectedObject, setSelectedObject] = useState<objectType | null>(null)
 
-  // Función para abrir el modal con el objeto seleccionado
   const handleObjectClick = (object: objectType) => {
-    setSelectedObject(object)  // Guarda el objeto seleccionado para abrir el modal
+    setSelectedObject(object)
   }
 
-  // Función para cerrar el modal
   const closeModal = () => setSelectedObject(null)
 
-  // Filtrar objetos en función de la opción seleccionada
   const filteredObjects = objects.filter(object => {
     if (option === "usuario") {
-      return object.estado_objeto === true; // Solo objetos aceptados
+      return object.estado_objeto === true
     }
-    return true; // Mostrar todos los objetos en la vista general
+    return true
   })
 
   return (
@@ -36,7 +33,7 @@ const ObjectsList: FC<Props> = ({ objects, option, buttonText }) => {
           <div
             className="w-full sm:w-1/2 md:w-1/3 lg:w-1/5 bg-white shadow-md"
             key={object.id_object}
-            onClick={() => handleObjectClick(object)} // Al hacer clic en un objeto, abrir el modal
+            onClick={() => handleObjectClick(object)}
           >
             <img
               src={object.image_url as string}
@@ -59,7 +56,6 @@ const ObjectsList: FC<Props> = ({ objects, option, buttonText }) => {
         ))}
       </div>
 
-      {/* Mostrar el modal solo cuando un objeto ha sido seleccionado */}
       {selectedObject && (
         <ObjectModal
           selectedObject={selectedObject}
