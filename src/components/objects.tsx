@@ -20,12 +20,7 @@ const ObjectsList: FC<Props> = ({ objects, option, buttonText, onObjectChange })
 
   const closeModal = () => setSelectedObject(null)
 
-  const filteredObjects = objects.filter(object => {
-    if (option === "usuario") {
-      return true
-    }
-    return true
-  })
+  const filteredObjects = objects
 
   const handleDelete = async (id_object: string) => {
     try {
