@@ -121,10 +121,10 @@ export default function LostObjects() {
                     </div>
 
                     <div className="mb-4">
-                    <label className="block mb-2 font-bold">Lo he dejado en</label>
+                    <label className="block mb-2 font-bold">Lugar</label>
                     <input 
                         type="text" 
-                        placeholder="Describe el lugar donde lo perdiste." 
+                        placeholder="Describe el lugar donde lo perdiste o encontraste." 
                         className="w-full p-2 border-2 border-gray-300 rounded shadow-sm focus:outline-none focus:border-blue-500" 
                         {...register("localization", {required: true})}
                     />

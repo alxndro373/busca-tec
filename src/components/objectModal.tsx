@@ -2,6 +2,7 @@ import { objectStore } from "@/store/objectStore"
 import { objectType } from "@/types/objectType"
 import { FC } from "react"
 import { useSession } from "next-auth/react"
+import Swal from "sweetalert2"
 
 interface ObjectModalProps {
   selectedObject: objectType
@@ -33,45 +34,83 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
   }
 
   const handleReclamado = async () => {
-    if (selectedObject.state === "perdido" || selectedObject.state === "encontrado") {
-      await changeObjectState(selectedObject.id_object, "reclamado", selectedObject.estado_objeto) // Mantener estado_objeto
-      onClose()
-    } else {
-      console.error("El estado del objeto es inválido para marcarlo como reclamado.")
-    }
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Este objeto será marcado como reclamado.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, reclamar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (selectedObject.state === "perdido" || selectedObject.state === "encontrado") {
+          await changeObjectState(selectedObject.id_object, "reclamado", selectedObject.estado_objeto) // Mantener estado_objeto
+          onClose()
+          Swal.fire("Reclamado", "El objeto ha sido marcado como reclamado.", "success")
+        } else {
+          console.error("El estado del objeto es inválido para marcarlo como reclamado.")
+          Swal.fire("Error", "El estado del objeto no es válido.", "error")
+        }
+      }
+    })
   }
 
   const handleAccept = async () => {
-    if (selectedObject.estado_objeto === false) {
-      if (selectedObject.state !== null) {
-        await changeObjectState(selectedObject.id_object, selectedObject.state, true)
-        onClose()
-      } else {
-        console.error("El estado del objeto no es válido.")
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Este objeto será aceptado y marcado como reclamado.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, aceptar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (selectedObject.estado_objeto === false) {
+          if (selectedObject.state !== null) {
+            await changeObjectState(selectedObject.id_object, selectedObject.state, true)
+            onClose()
+            Swal.fire("Aceptado", "El objeto ha sido aceptado.", "success")
+          } else {
+            console.error("El estado del objeto no es válido.")
+            Swal.fire("Error", "El estado del objeto no es válido.", "error")
+          }
+        } else {
+          console.error("Este objeto ya ha sido reclamado.")
+          Swal.fire("Error", "Este objeto ya ha sido reclamado.", "error")
+        }
       }
-    } else {
-      console.error("Este objeto ya ha sido reclamado.")
-    }
+    })
   }
 
   const handleDelete = async (id_object: string) => {
-    try {
-      const response = await fetch(`/api/db/${id_object}`, {
-        method: "DELETE",
-      })
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Este objeto será eliminado permanentemente.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`/api/db/${id_object}`, {
+            method: "DELETE",
+          })
 
-      if (!response.ok) {
-        throw new Error("Error al eliminar el objeto")
+          if (!response.ok) {
+            throw new Error("Error al eliminar el objeto")
+          }
+
+          await objectStore.getState().deleteObject(id_object)
+
+          onClose()
+          Swal.fire("Eliminado", "El objeto ha sido eliminado exitosamente.", "success")
+        } catch (error) {
+          Swal.fire("Error", "Hubo un problema al eliminar el objeto.", "error")
+          console.error(error)
+        }
       }
-
-      await objectStore.getState().deleteObject(id_object)
-
-      onClose()
-      alert("Objeto eliminado exitosamente")
-    } catch (error) {
-      alert("Error al eliminar el objeto")
-      console.error(error)
-    }
+    })
   }
 
   return (
@@ -104,7 +143,6 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
             <strong>Lugar:</strong> {selectedObject.localization}
           </p>
 
-          {/* Acción para el usuario (WhatsApp) */}
           {option === "usuario" && (selectedObject.state === "perdido" || selectedObject.state === "encontrado") && selectedObject.phone && (
             <button
               onClick={handleAction}
@@ -114,7 +152,6 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
             </button>
           )}
 
-          {/* Eliminar objeto para el usuario */}
           {option === "usuario" && isOwner && (
             <button
               onClick={() => handleDelete(selectedObject.id_object)}
@@ -124,7 +161,6 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
             </button>
           )}
 
-          {/* Marcar como "Reclamado" para el usuario */}
           {option === "usuario" && (selectedObject.state === "perdido" || selectedObject.state === "encontrado") && isOwner && (
             <button
               onClick={handleReclamado}
@@ -134,7 +170,6 @@ const ObjectModal: FC<ObjectModalProps> = ({ selectedObject, onClose, buttonText
             </button>
           )}
 
-          {/* Botones para el admin (Aceptar/Rechazar) */}
           {option === "admin" && (
             <div>
               <button
