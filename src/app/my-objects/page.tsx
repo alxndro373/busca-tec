@@ -1,7 +1,7 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { objectStore } from "@/store/objectStore"
-import { useEffect, useState } from "react"
 import ObjectsList from "@/components/objects"
 import { useSession } from "next-auth/react"
 import { getUserWithEmail } from "@/actions/userAction"
@@ -11,6 +11,22 @@ export default function MyObjects() {
   const [loading, setLoading] = useState<boolean>(true)
   const { recuperateObjectsByUser, objectsByUser } = objectStore()
   const { data: session } = useSession()
+
+  const handleObjectChange = async () => {
+    if (session?.user?.email) {
+      setLoading(true)
+      try {
+        const user = await getUserWithEmail(session.user.email)
+        if (user[0]?.id_user) {
+          await recuperateObjectsByUser(user[0]?.id_user)
+        }
+      } catch (error) {
+        console.error("Error al actualizar los objetos:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,16 +45,7 @@ export default function MyObjects() {
       }
     }
 
-    // Verificar si ya se hizo la recarga antes
-    if (!localStorage.getItem("pageReloaded")) {
-      localStorage.setItem("pageReloaded", "true")  // Marcar que ya se hizo la recarga
-      window.location.reload()  // Recargar la página solo una vez
-    } else {
-      // Si ya se recargó, solo cargar los datos
-      if (session?.user?.email) {
-        fetchData()
-      }
-    }
+    fetchData()
   }, [session?.user?.email, recuperateObjectsByUser])
 
   return (
@@ -54,6 +61,7 @@ export default function MyObjects() {
           objects={objectsByUser}
           buttonText="Reclamado"
           option="usuario"
+          onObjectChange={handleObjectChange} // Llama esta función cuando un objeto se agrega/elimina
         />
       ) : (
         <p className="text-center">No tienes objetos publicados</p>
